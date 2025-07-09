@@ -1,0 +1,2 @@
+earthengine-api>=0.1.335
+ee-s1-ard>=0.1.0

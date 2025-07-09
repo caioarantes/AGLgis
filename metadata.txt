@@ -5,15 +5,15 @@
 [general]
 name=AGLgis
 qgisMinimumVersion=3.0
-description=AGL's lib implementation on QGIS
+description=AGLgis
 version=0.1
-author=Caio Arantes, Mateus Pinto da Silva
-email=me@caioarantes.com
+author=Caio Arantes, Mateus Pinto
+email=caiosimplicioarantes@gmail.com
 
-about=AGL's lib implementation on QGIS
+about=AGLgis is a QGIS plugin designed to seamlessly integrate with Google Earth Engine (GEE) and the ee_s1_ard package
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/caioarantes/AGLgis-qgis-plugin/issues
+repository=https://github.com/caioarantes/AGLgis-qgis-plugin
 # End of mandatory metadata
 
 # Recommended items:
@@ -25,9 +25,9 @@ hasProcessingProvider=no
 # Tags are comma separated with spaces allowed
 tags=python
 
-homepage=http://homepage
+homepage=https://caioarantes.github.io/AGLgis
 category=Plugins
-icon=icon.png
+icon=media/icon.png
 # experimental flag
 experimental=False
 
@@ -40,7 +40,7 @@ deprecated=False
 # plugin_dependencies=
 
 Category of the plugin: Raster, Vector, Database or Web
-# category=
+# category=Database
 
 # If the plugin can run on QGIS Server.
 server=False
