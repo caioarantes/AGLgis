@@ -292,19 +292,17 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.hybrid.clicked.connect(map_tools.hybrid_function)
         self.QPushButton_next.clicked.connect(self.next_clicked)
         self.QPushButton_next_2.clicked.connect(self.next_clicked)
-        self.QPushButton_next_3.clicked.connect(self.next_clicked)
         self.QPushButton_next_4.clicked.connect(self.next_clicked)
         self.QPushButton_next_6.clicked.connect(self.next_clicked)
         self.QPushButton_back.clicked.connect(self.back_clicked)
         self.QPushButton_back_2.clicked.connect(self.back_clicked)
-        self.QPushButton_back_3.clicked.connect(self.back_clicked)
         self.QPushButton_back_4.clicked.connect(self.back_clicked)
         self.QPushButton_back_6.clicked.connect(self.back_clicked)
         self.QPushButton_back_7.clicked.connect(self.back_clicked)
         self.loadtimeseries.clicked.connect(self.loadtimeseries_clicked)
         self.navegador.clicked.connect(self.open_browser)
         self.datasrecorte.clicked.connect(self.datasrecorte_clicked)
-        self.QPushButton_skip.clicked.connect(lambda: self.tabWidget.setCurrentIndex(6))
+        self.QPushButton_skip.clicked.connect(lambda: self.tabWidget.setCurrentIndex(5))
 
         self.salvar.clicked.connect(self.salvar_clicked)
         self.drawing.stateChanged.connect(self.drawing_clicked)
@@ -322,8 +320,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.radioButton_5years.clicked.connect(lambda: self.last_clicked(5 * 12))
         self.combo_year.currentIndexChanged.connect(self.selected_year_clicked)
 
-        self.horizontalSlider_aio_cover.valueChanged.connect(self.update_labels)
-        self.horizontalSlider_aio_cover_2.valueChanged.connect(self.update_labels_2)
 
         self.horizontalSlider_buffer.valueChanged.connect(self.update_labels)
         self.horizontalSlider_buffer_2.valueChanged.connect(self.update_labels_2)
@@ -335,7 +331,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
 
     def load_index(self, preview=False):
         print("Loading index...")
-
 
     def combobox_2_update(self):
         print("combobox_2_update called")
@@ -353,14 +348,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         """Atualiza o texto de vários rótulos com base nos valores dos
         sliders horizontais."""
 
-        self.label_coverage.setText(f"{self.horizontalSlider_aio_cover.value()}%")
-        self.label_coverage_2.setText(f"{self.horizontalSlider_aio_cover.value()}%")
-        self.horizontalSlider_aio_cover_2.setValue(self.horizontalSlider_aio_cover.value())
-
-        self.label_cloud.setText(f"{self.horizontalSlider_total_pixel_limit.value()}%")
-        self.label_cloud_2.setText(f"{self.horizontalSlider_total_pixel_limit.value()}%")
-        self.horizontalSlider_total_pixel_limit_2.setValue(self.horizontalSlider_total_pixel_limit.value())
-
         self.label_buffer.setText(f"{self.horizontalSlider_buffer.value()}m")
         self.label_buffer_2.setText(f"{self.horizontalSlider_buffer.value()}m")
         self.horizontalSlider_buffer_2.setValue(self.horizontalSlider_buffer.value())
@@ -371,26 +358,10 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         """Atualiza o texto de vários rótulos com base nos valores dos
         sliders horizontais."""
 
-        self.label_coverage.setText(f"{self.horizontalSlider_aio_cover_2.value()}%")
-        self.label_coverage_2.setText(f"{self.horizontalSlider_aio_cover_2.value()}%")
-        self.horizontalSlider_aio_cover.setValue(self.horizontalSlider_aio_cover_2.value())
-
-        self.label_cloud.setText(f"{self.horizontalSlider_total_pixel_limit_2.value()}%")
-        self.label_cloud_2.setText(f"{self.horizontalSlider_total_pixel_limit_2.value()}%")
-        self.horizontalSlider_total_pixel_limit.setValue(self.horizontalSlider_total_pixel_limit_2.value())
-
         self.label_buffer.setText(f"{self.horizontalSlider_buffer_2.value()}m")
         self.label_buffer_2.setText(f"{self.horizontalSlider_buffer_2.value()}m")
         self.horizontalSlider_buffer.setValue(self.horizontalSlider_buffer_2.value())
 
-    def custom_filter_clicked(self):
-        """Slot method to handle the custom filter checkbox click event."""
-        """Método slot para lidar com o evento de clique da checkbox de filtro
-        personalizado."""
-        if self.customfilter.isChecked():
-            self.horizontalSlider.setEnabled(True)
-        else:
-            self.horizontalSlider.setEnabled(False)
 
     def open_link(self, url):
         """Open the clicked link in the default web browser."""
