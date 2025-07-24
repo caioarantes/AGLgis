@@ -118,14 +118,10 @@ from qgis.utils import iface
 
 from .modules import (
     map_tools,
-    nasa_power,
-    vegetation_index_info,
     save_utils,
     authentication,
-    coordinate_capture,
 )
 
-from .modules.coordinate_capture import CoordinateCaptureTool
 
 # =============================================================================
 # AGLgisDialog Class Definition / Definição da Classe AGLgisDialog
@@ -167,7 +163,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         
         # Set default values / Define valores padrão
         self.last_clicked(3)
-        self.index_explain()
         self.load_intro()
        
         self.tabWidget.setCurrentIndex(0)
@@ -235,7 +230,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         """Initializes variables."""          
 
         # Initialize variables / Inicializa variáveis
-        self.coordinate_capture_tool = None
         self.plot1 = None
         self.autentication = False
         self.folder_set = False
@@ -250,11 +244,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.df_aux = None
         self.selected_dates = []
         self.output_folder = None
-        self.df_nasa = None
-        self.df_points = None
-        self.daily_data = None
         self.selected_aio_layer_path = None
-        self.custom_expression_name = ""
 
 
     def setup_ui(self):
@@ -263,39 +253,17 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         """Configuração inicial da UI."""
         self.QTextBrowser.setReadOnly(True)  # Prevent editing / Impede a edição
         self.QTextBrowser.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
-        self.textBrowser_valid_pixels.setReadOnly(True)
-        self.textBrowser_valid_pixels.setTextInteractionFlags(
-            Qt.TextInteractionFlag.TextBrowserInteraction
-        )
+
         self.project_QgsPasswordLineEdit.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
 
         vegetation_index = [
-            "NDVI",
-            "EVI",
-            'EVI2',
-            "SAVI",
-            "GNDVI",
-            "MSAVI",
-            "SFDVI",
-            "CIgreen",
-            "NDRE",
-            "ARVI",
-            "NDMI",
-            "NBR",
-            "SIPI",
-            "NDWI",
-            "ReCI",
-            "MTCI",
-            "MCARI",
-            "VARI",
-            "TVI",
+            "VV",
+            "VH",
+            
         ]
 
         self.imagem_unica_indice.addItems(vegetation_index)
-        self.indice_composicao.addItems(vegetation_index)
-        self.series_indice_2.addItems(vegetation_index)
-        self.series_indice_3.addItems(vegetation_index)
-        self.series_indice.addItems(vegetation_index)
+        
         self.combo_year.addItems(
             [str(year) for year in range(2017, datetime.datetime.now().year + 1)]
         )
@@ -314,66 +282,36 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             lambda new_text: authentication.autoSaveProjectId(self, new_text)
         )
 
-        self.clear_button_points.clicked.connect(self.remove_all_dots)
-        self.QPushButton_features.clicked.connect(self.QPushButton_features_clicked)
+
+
         self.update_vector.clicked.connect(self.update_vector_clicked)
         self.update_vector_2.clicked.connect(self.update_vector_clicked)
-        self.update_vector_3.clicked.connect(self.update_vector_clicked)
         self.tabWidget.currentChanged.connect(self.on_tab_changed)
         self.load_1index.clicked.connect(self.load_index)
-        self.load_1rgb.clicked.connect(self.load_rgb)
-        self.composicao.clicked.connect(self.composite_clicked)
         self.load_1index_preview.clicked.connect(lambda: self.load_index(True))
-        self.load_1rgb_preview.clicked.connect(lambda: self.load_rgb(True))
-        self.composicao_preview.clicked.connect(lambda: self.composite_clicked(True))
-        self.clear_raster.clicked.connect(self.clear_all_raster_layers)
         self.hybrid.clicked.connect(map_tools.hybrid_function)
         self.QPushButton_next.clicked.connect(self.next_clicked)
         self.QPushButton_next_2.clicked.connect(self.next_clicked)
         self.QPushButton_next_3.clicked.connect(self.next_clicked)
         self.QPushButton_next_4.clicked.connect(self.next_clicked)
-        self.QPushButton_next_5.clicked.connect(self.next_clicked)
         self.QPushButton_next_6.clicked.connect(self.next_clicked)
-        self.QPushButton_next_7.clicked.connect(self.next_clicked)
-        self.QPushButton_next_8.clicked.connect(self.next_clicked)
         self.QPushButton_back.clicked.connect(self.back_clicked)
         self.QPushButton_back_2.clicked.connect(self.back_clicked)
         self.QPushButton_back_3.clicked.connect(self.back_clicked)
         self.QPushButton_back_4.clicked.connect(self.back_clicked)
-        self.QPushButton_back_5.clicked.connect(self.back_clicked)
         self.QPushButton_back_6.clicked.connect(self.back_clicked)
         self.QPushButton_back_7.clicked.connect(self.back_clicked)
-        self.QPushButton_back_8.clicked.connect(self.back_clicked)
-        self.QPushButton_back_9.clicked.connect(self.back_clicked)
         self.loadtimeseries.clicked.connect(self.loadtimeseries_clicked)
-        self.loadtimeseries_2.clicked.connect(self.loadtimeseries_clicked_2)
         self.navegador.clicked.connect(self.open_browser)
-        self.navegador_2.clicked.connect(self.open_browser_2)
-        self.navegador_3.clicked.connect(self.open_browser_3)
         self.datasrecorte.clicked.connect(self.datasrecorte_clicked)
-        self.datasrecorte_2.clicked.connect(self.datasrecorte_clicked)
-        self.datasrecorte_3.clicked.connect(self.datasrecorte_clicked)
-        self.add_dot.clicked.connect(self.add_dot_from_coordinates)
-        self.QPushButton_skip.clicked.connect(lambda: self.tabWidget.setCurrentIndex(9))
+        self.QPushButton_skip.clicked.connect(lambda: self.tabWidget.setCurrentIndex(6))
 
         self.salvar.clicked.connect(self.salvar_clicked)
-        self.salvar_2.clicked.connect(self.salvar_clicked_2)
-        self.salvar_3.clicked.connect(self.salvar_clicked_3)
-        self.salvar_nasa.clicked.connect(self.salvar_nasa_clicked)
-        #self.build_vector_layer.clicked.connect(self.build_vector_layer_clicked)
         self.drawing.stateChanged.connect(self.drawing_clicked)
-        self.QCheckBox_sav_filter.stateChanged.connect(self.plot_timeseries)
-        self.filtro_grau.currentIndexChanged.connect(self.plot_timeseries)
-        self.window_len.currentIndexChanged.connect(self.plot_timeseries)
 
         self.vector_layer_combobox.currentIndexChanged.connect(self.get_selected_layer_path)
 
         self.vector_layer_combobox_2.currentIndexChanged.connect(self.combobox_2_update)
-        #self.vector_layer_combobox_2.currentIndexChanged.connect(self.combobox_3_update)
-        self.vector_layer_combobox_3.currentIndexChanged.connect(self.combobox_3_update)
-        #self.vector_layer_combobox_3.currentIndexChanged.connect(self.combobox_2_update)
-
-        self.checkBox_captureCoordinates.stateChanged.connect(self.toggle_coordinate_capture_tool)
 
         self.mQgsFileWidget.fileChanged.connect(self.on_file_changed)
         self.radioButton_all.clicked.connect(self.all_clicked)
@@ -384,665 +322,36 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.radioButton_5years.clicked.connect(lambda: self.last_clicked(5 * 12))
         self.combo_year.currentIndexChanged.connect(self.selected_year_clicked)
 
-        self.horizontalSlider_local_pixel_limit.valueChanged.connect(self.update_labels)
-        self.horizontalSlider_local_pixel_limit_2.valueChanged.connect(self.update_labels_2)
-
         self.horizontalSlider_aio_cover.valueChanged.connect(self.update_labels)
         self.horizontalSlider_aio_cover_2.valueChanged.connect(self.update_labels_2)
 
         self.horizontalSlider_buffer.valueChanged.connect(self.update_labels)
         self.horizontalSlider_buffer_2.valueChanged.connect(self.update_labels_2)
 
-        self.horizontalSlider_total_pixel_limit.valueChanged.connect(self.update_labels)
-        self.horizontalSlider_total_pixel_limit_2.valueChanged.connect(self.update_labels_2)
-   
-        self.series_indice.currentIndexChanged.connect(self.reload_update)
-        self.series_indice_2.currentIndexChanged.connect(self.reload_update2)
-        self.series_indice_3.currentIndexChanged.connect(self.reload_update3)
-
-
         self.incioedit.dateChanged.connect(self.reload_update)
-        self.incioedit_2.dateChanged.connect(self.reload_update2)
 
         self.finaledit.dateChanged.connect(self.reload_update)
-        self.finaledit_2.dateChanged.connect(self.reload_update2)
 
-        
-        self.nasapower.clicked.connect(self.nasapower_clicked)
-        self.clear_nasa.clicked.connect(self.clear_nasa_clicked)
-        self.QTextBrowser.anchorClicked.connect(self.open_link)
-        self.textBrowser_valid_pixels.anchorClicked.connect(self.open_link)
-        self.series_indice.currentIndexChanged.connect(self.index_explain)
 
-        self.setup_custom.clicked.connect(self.setup_custom_clicked)
+    def load_index(self, preview=False):
+        print("Loading index...")
 
-        # Create a list of primary and secondary checkboxes
-        self.primary_masks = [
-            self.mask,
-            self.mask_class0,
-            self.mask_class1,
-            self.mask_class2,
-            self.mask_class3,
-            self.mask_class4,
-            self.mask_class5,
-            self.mask_class6,
-            self.mask_class7,
-            self.mask_class8,
-            self.mask_class9,
-            self.mask_class10,
-            self.mask_class11,
-        ]
-
-        self.secondary_masks = [
-            self.mask_2,
-            self.mask_class0_2,
-            self.mask_class1_2,
-            self.mask_class2_2,
-            self.mask_class3_2,
-            self.mask_class4_2,
-            self.mask_class5_2,
-            self.mask_class6_2,
-            self.mask_class7_2,
-            self.mask_class8_2,
-            self.mask_class9_2,
-            self.mask_class10_2,
-            self.mask_class11_2,
-        ]
-
-        # Connect primary checkboxes to update_masks
-        for primary in self.primary_masks:
-            primary.stateChanged.connect(self.update_masks)
-
-        # Connect secondary checkboxes to update_masks_2
-        for secondary in self.secondary_masks:
-            secondary.stateChanged.connect(self.update_masks_2)
-
-        self.mask.stateChanged.connect(self.mask_warning)
-        self.mask_2.stateChanged.connect(self.mask_warning)
-
-    def mask_warning(self):
-        if not hasattr(self, "_mask_warning_shown"):
-            if self.mask.isChecked() or self.mask_2.isChecked():
-                message = (
-                    "SCL mask activated. The effectiveness of this feature is "
-                    "uncertain and depends on validation. It is recommended to "
-                    "compare images without pixel removal to verify if the "
-                    "performance is appropriate for your purposes."
-                )
-                self.pop_warning(message)
-            self._mask_warning_shown = True
-
-    def update_masks(self):
-        # Synchronize secondary checkboxes based on primary ones
-        for primary, secondary in zip(self.primary_masks, self.secondary_masks):
-            secondary.setChecked(primary.isChecked())
-
-    def update_masks_2(self):
-        # Synchronize primary checkboxes based on secondary ones
-        for primary, secondary in zip(self.primary_masks, self.secondary_masks):
-            primary.setChecked(secondary.isChecked())
-
-    def nasapower_clicked(self):
-        """Handles the event when the "NASA POWER" button is clicked."""
-        """Manipula o evento quando o botão "NASA POWER" é clicado."""
-        # Get the latitude and longitude from the UI / Obtém a latitude e
-        # longitude da UI
-        self.find_centroid()
-        self.df_nasa, self.daily_data = nasa_power.open_nasapower(
-            str(self.lat),
-            str(self.lon),
-            self.df_aux.date.tolist()[0],
-            self.df_aux.date.tolist()[-1],
-        )
-        self.plot_timeseries()
-
-    def setup_custom_clicked(self):
-        # Load the custom index UI
-        custom_index_ui_path = os.path.join(os.path.dirname(__file__), "ui", "custom_index.ui")
-        custom_index_dialog, _ = uic.loadUiType(custom_index_ui_path)
-
-        class CustomIndexDialog(QDialog, custom_index_dialog):
-            def __init__(self, parent=None):
-                super(CustomIndexDialog, self).__init__(parent)
-                self.setupUi(self)
-                self.setWindowFlags(self.windowFlags() & ~Qt.WindowStaysOnTopHint)
-                self.add_custom_index.clicked.connect(self.add_custom_index_clicked)
-                
-                # Load previously saved expression and name from settings
-                settings = QSettings()
-                default_expression = "((B1 + B2 + B3 + B4 + B5 + B6 + B7 + B8 + B8A + B9 + B11 + B12) / 12)"
-                default_name = "Average"
-                
-                # Load and set values, use defaults if not found in settings
-                self.expressionTextEdit.setPlainText(settings.value("aglgis_plugin/custom_expression", default_expression))
-                self.expression_nameTextEdit.setPlainText(settings.value("aglgis_plugin/custom_expression_name", default_name))
-                
-                self.expression = None # add a variable
-                self.expression_name = None
-            def add_custom_index_clicked(self):
-                # Retrieve the custom expression and name from the dialog
-                expression = self.expressionTextEdit.toPlainText()
-                expression_name = self.expression_nameTextEdit.toPlainText()
-                    
-                self.expression = expression
-                self.expression_name = expression_name
-                    
-                self.accept() # close dialog
-        # Create and show the dialog
-        dialog = CustomIndexDialog(self)  # Pass AGLgisDialog instance as parent
-        dialog.exec() # Run and await
-
-        if dialog.result():
-        # Store expression and name in settings
-            settings = QSettings()
-            settings.setValue("aglgis_plugin/custom_expression", dialog.expression)
-            settings.setValue("aglgis_plugin/custom_expression_name",  dialog.expression_name)
-
-            # Add the custom name, avoid repeat custom indexes
-            custom_index_name = dialog.expression_name + " (custom)"
-            
-            # Check if the name already exists
-            vegetation_index = [
-                "NDVI",
-                "EVI",
-                'EVI2',
-                "SAVI",
-                "GNDVI",
-                "MSAVI",
-                "SFDVI",
-                "CIgreen",
-                "NDRE",
-                "ARVI",
-                "NDMI",
-                "NBR",
-                "SIPI",
-                "NDWI",
-                "ReCI",
-                "MTCI",
-                "MCARI",
-                "VARI",
-                "TVI",
-                custom_index_name
-                ]
-            self.imagem_unica_indice.clear()
-            self.indice_composicao.clear()
-            self.series_indice_2.clear()
-            self.series_indice_3.clear()
-            self.series_indice.clear()
-
-            self.imagem_unica_indice.addItems(vegetation_index)
-            self.indice_composicao.addItems(vegetation_index)
-            self.series_indice_2.addItems(vegetation_index)
-            self.series_indice_3.addItems(vegetation_index)
-            self.series_indice.addItems(vegetation_index)
-            # Add the custom index to all dropdowns
-            self.imagem_unica_indice.setCurrentIndex(self.imagem_unica_indice.count() - 1)
-            self.indice_composicao.setCurrentIndex(self.indice_composicao.count() - 1)
-            self.series_indice_2.setCurrentIndex(self.series_indice_2.count() - 1)
-            self.series_indice_3.setCurrentIndex(self.series_indice_3.count() - 1)
-            self.series_indice.setCurrentIndex(self.series_indice.count() - 1)
-            self.custom_expression = dialog.expression
-            self.custom_expression_name = dialog.expression_name
-            self.pop_warning("Índice personalizado adicionado com sucesso!")
-
-    def toggle_coordinate_capture_tool(self, state):
-        print("toggle_coordinate_capture_tool called")
-        """Toggles the coordinate capture tool based on the checkbox state."""
-        """Ativa/desativa a ferramenta de captura de coordenadas com base no
-        estado da checkbox."""
-        canvas = iface.mapCanvas()
-        if state == Qt.Checked:  # Checkbox is checked (active) / Checkbox
-            # está marcada (ativa)
-            # Deactivate any existing tool before activating the new one /
-            # Desativa qualquer ferramenta existente antes de ativar a nova
-            if canvas.mapTool():
-                canvas.unsetMapTool(canvas.mapTool())
-            if not self.coordinate_capture_tool:  # Only create if it doesn't exist / Cria somente se não existir
-                self.coordinate_capture_tool = CoordinateCaptureTool(canvas, self)
-                print("CoordinateCaptureTool created")
-            canvas.setMapTool(self.coordinate_capture_tool)
-            print("Coordinate capture tool activated.")
-            print(f"self.coordinate_capture_tool: {self.coordinate_capture_tool}")
-            self.sentinel2_selected_dates_update()
-        else:  # Checkbox is unchecked (inactive) / Checkbox não está marcada
-            # (inativa)
-            self.deactivate_coordinate_capture_tool()
-            print("Coordinate capture tool deactivated.")
-            print(f"self.coordinate_capture_tool: {self.coordinate_capture_tool}")
-
-    def activate_coordinate_capture_tool(self):
-        canvas = iface.mapCanvas()
-        if (
-            self.checkBox_captureCoordinates.isChecked()
-        ):  # Button is checked (active)
-            # Deactivate any existing tool before activating the new one
-            if canvas.mapTool():
-                canvas.unsetMapTool(canvas.mapTool())
-            self.coordinate_capture_tool = CoordinateCaptureTool(canvas, self)
-            canvas.setMapTool(self.coordinate_capture_tool)
-            print("Coordinate capture tool activated.")
-        else:  # Button is unchecked (inactive)
-            self.deactivate_coordinate_capture_tool()
-
-            print("Coordinate capture tool deactivated.")
-
-    def deactivate_coordinate_capture_tool(self):
-        """Deactivates the coordinate capture map tool."""
-        """Desativa a ferramenta de mapa de captura de coordenadas."""
-        print("deactivate_coordinate_capture_tool called")
-        if (
-            hasattr(self, "coordinate_capture_tool")
-            and self.coordinate_capture_tool
-        ):
-            canvas = iface.mapCanvas()
-            canvas.unsetMapTool(self.coordinate_capture_tool)
-
-            # self.coordinate_capture_tool = None  # Deactivate the tool
-            print("CoordinateCaptureTool deactivated")
-            print(f"self.coordinate_capture_tool: {self.coordinate_capture_tool}")
-        else:
-            print("No coordinate capture tool to deactivate.")
-
-
-    def remove_all_dots(self):
-        """Removes all dots from the map canvas."""
-        print("remove_all_dots called")
-        canvas = iface.mapCanvas()
-
-        if not self.coordinate_capture_tool:
-            print("No coordinate capture tool active.")
-            return  # Exit if no tool is active
-
-        rubberBands = self.coordinate_capture_tool.rubber_bands
-
-        if not rubberBands:
-            print("No dots to remove.")
-            return
-
-        for rubberBand in list(rubberBands):
-            try:
-                canvas.scene().removeItem(rubberBand)
-            except Exception as e:
-                print(f"Error removing rubber band: {e}")
-
-        iface.mapCanvas().refresh()  # Refresh the canvas
-
-        # Clear dataframes and web view
-        self.df_points = None
-        self.df_aux_points = None
-        self.webView_2.setHtml("")
-
-        print("All dots removed.")
-        CoordinateCaptureTool.DOT_COLORS = []
-
-
-
-        # Clear the list in the tool
-        self.coordinate_capture_tool.rubber_bands = []
-
-
-    # =========================================================================
-    # Project ID Management / Gerenciamento do ID do Projeto
-    # =========================================================================
-
-    def process_coordinates(self, longitude, latitude):
-        """Processes the captured coordinates with Earth Engine."""
-        """Processa as coordenadas capturadas com o Earth Engine."""
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        try:
-            # 1. Define the point (longitude, latitude) / Define o ponto
-            # (longitude, latitude)
-            point = ee.Geometry.Point(longitude, latitude)
-
-            # 2. Buffer the point to create a *very* small polygon (e.g., 2
-            # meters) / Cria um buffer no ponto para criar um polígono *muito*
-            # pequeno (ex: 2 metros)
-            aoi = point.buffer(2)
-
-            # Do something with the aoi (e.g., print its information) / Faz
-            # algo com a aoi (ex: imprime suas informações)
-            print(f"AOI (point) defined")
-            name = f"({round(latitude,5)},{round(longitude,5)})"
-            print("point:", name)
-            # print(self.point_calculate_timeseries(aoi, name))
-
-            if self.df_points is None:
-                self.df_points = self.df_aux[["date", "AOI_average"]]
-                self.df_points["date"] = pd.to_datetime(self.df_points["date"])
-
-            new_df = self.point_calculate_timeseries(aoi, name)
-            new_df["date"] = pd.to_datetime(new_df["date"])
-            print(new_df)
-            self.df_points = pd.merge(
-                self.df_points, new_df, on="date", how="outer"
-            )
-
-            self.df_ajust_points()
-            self.plot_timeseries_points()
-        except Exception as e:
-            QApplication.restoreOverrideCursor()
-            print(f"Error processing with Earth Engine: {e}")
-            QMessageBox.critical(
-                self,
-                "Earth Engine Error",
-                f"An error occurred: {e}",
-            )
-        QApplication.restoreOverrideCursor()
-
-    def plot_timeseries_points(self):
-        print("Plotting time series for points...")
-
-        df = self.df_aux_points
-        print(df.shape)
-
-        # Melt the dataframe to have a long format
-        df_melted = df.melt(
-            id_vars="date",
-            var_name="Points (lat, long)",
-            value_name=self.series_indice.currentText(),
-        )
-
-        # Get unique point labels
-        unique_points = df_melted["Points (lat, long)"].unique()
-        
-        # Create color mapping
-        color_map = {}
-        
-        # Use blue for the first point
-        if len(unique_points) > 0:
-            color_map[unique_points[0]] = "blue"
-        
-        # Use the captured colors for the remaining points
-        for i, point in enumerate(unique_points[1:], 1):
-            if i-1 < len(CoordinateCaptureTool.DOT_COLORS):
-                # Convert QColor to hex string
-                qcolor = CoordinateCaptureTool.DOT_COLORS[i-1]
-                hex_color = f"#{qcolor.red():02x}{qcolor.green():02x}{qcolor.blue():02x}"
-                color_map[point] = hex_color
-        
-        print("Color mapping:")
-        print(color_map)
-
-        # Create the line plot with custom colors
-        fig = px.line(
-            df_melted,
-            x="date",
-            y=self.series_indice.currentText(),
-            color="Points (lat, long)",
-            line_dash="Points (lat, long)",
-            title=f"Time Series - {self.series_indice.currentText()} - Points",
-            color_discrete_map=color_map
-        )
-        
-        fig.update_layout(
-            yaxis_title=self.series_indice.currentText(),
-            title=f"Time Series - {self.series_indice.currentText()} - Points",
-            xaxis_title=None,  # Remove x-axis label
-        )
-        
-        self.fig_3 = fig
-        #fig.show()
-
-        self.webView_2.setHtml(
-            fig.to_html(include_plotlyjs="cdn", config=self.config)
-        )
-        
-        print("Feature info calculated and plotted.")
-        
-        # print('colors:')
-        # print(CoordinateCaptureTool.DOT_COLORS)
-
-
-    # =========================================================================
-
-    def load_fields(self, id_column=None):
-        # Get the system's temporary directory / Obtém o diretório temporário do
-        # sistema
-        temp_folder = tempfile.gettempdir()
-        print(f"Temporary folder: {temp_folder}")
-
-        # Input shapefile path / Caminho do shapefile de entrada
-        input_path = self.selected_aio_layer_path
-
-        # Open the layer / Abre a camada
-        layer = QgsVectorLayer(input_path, "Polygons", "ogr")
-        if not layer.isValid():
-            print("Failed to load the layer.")
-            return
-
-        # Populate the attributes_id combobox with unique field names /
-        # Popula a combobox attributes_id com nomes de campos únicos
-        unique_fields = [field.name() for field in layer.fields()]
-
-        self.attributes_id.clear()
-        self.attributes_id.addItems(sorted(unique_fields))
-
-    def QPushButton_features_clicked(self):
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        self.sentinel2_selected_dates_update()
-        feature_info = self.split_features(self.attributes_id.currentText())
-        self.feature_info(feature_info)
-        self.df_ajust_features()
-        self.plot_timeseries_features()
-        QApplication.restoreOverrideCursor()
-
-    def split_features(self, id_column=None):
-        """
-        Splits each feature from the selected vector layer into individual
-        shapefiles using memory layers and avoids creating multiple memory layers
-        inside the loop.
-        """
-        # Get the system's temporary directory
-        temp_folder = tempfile.gettempdir()
-        print(f"Temporary folder: {temp_folder}")
-
-        # Input shapefile path
-        input_path = self.selected_aio_layer_path
-
-        # Open the layer
-        layer = QgsVectorLayer(input_path, "Polygons", "ogr")
-
-        # Validate id_column if provided
-        if id_column and id_column not in [field.name() for field in layer.fields()]:
-            raise ValueError(f"Column '{id_column}' not found in layer attributes")
-
-        feature_count = layer.featureCount()
-        print(f"Total features to process: {feature_count}")
-
-        feature_info = {}
-
-        # Create a single memory layer outside the loop
-        memory_layer = QgsVectorLayer(
-            f"Polygon?crs={layer.crs().authid()}", "split_features_memory_layer", "memory"
-        )
-        memory_layer.startEditing()
-        memory_provider = memory_layer.dataProvider()
-        memory_provider.addAttributes(layer.fields())
-        memory_layer.updateFields()
-
-        try:
-            for feature in layer.getFeatures():
-                # Get feature identifier
-                if id_column:
-                    feature_identifier = str(feature[id_column])
-                    feature_identifier = "".join(
-                        c for c in feature_identifier if c.isalnum() or c in ("-", "_")
-                    )
-                else:
-                    feature_identifier = str(feature.id())
-
-                output_path = os.path.join(
-                    temp_folder, f"feature_{feature_identifier}.shp"
-                )
-
-                # Clear existing features from the memory layer
-                memory_provider.truncate()
-                memory_layer.commitChanges()
-                memory_layer.startEditing()
-
-                # Add the current feature to the memory layer
-                memory_provider.addFeature(feature)
-                memory_layer.commitChanges()
-
-                try:
-                    # Save the memory layer as a new shapefile
-                    save_options = QgsVectorFileWriter.SaveVectorOptions()
-                    save_options.driverName = "ESRI Shapefile"
-
-                    error = QgsVectorFileWriter.writeAsVectorFormat(
-                        memory_layer,
-                        output_path,
-                        "UTF-8",
-                        layer.crs(),
-                        "ESRI Shapefile",
-                    )
-
-                    if error[0] != QgsVectorFileWriter.NoError:
-                        print(f"Error saving feature {feature_identifier}: {error}")
-                    else:
-                        print(
-                            f"Feature {feature_identifier} saved to: {output_path}"
-                        )
-                        feature_info[feature_identifier] = {
-                            "path": output_path,
-                            "attributes": {
-                                field.name(): feature[field.name()]
-                                for field in layer.fields()
-                            },
-                        }
-
-                except Exception as e:
-                    print(f"Error saving feature {feature_identifier}: {str(e)}")
-                finally:
-                    pass # No need to clean memory layer inside the loop
-
-        finally:
-            memory_layer.commitChanges()
-            del memory_layer  # Clean up memory layer
-
-        print("\nFinished processing all features.")
-        return feature_info
-
-    def feature_info(self, feature_info):
-        features = []
-
-        for feature_id, info in feature_info.items():
-            # Get the name from attributes, handle cases where 'NAME' might not
-            # exist / Obtém o nome dos atributos, lida com casos onde 'NAME'
-            # pode não existir
-            print(f"Feature ID: {self.attributes_id.currentText()}")
-            name = info["attributes"].get(
-                self.attributes_id.currentText(), "N/A"
-            )
-
-            path = info["path"]
-
-            self.aoi_feature = self.load_vector_function(path)
-            df_feature = self.feature_calculate_timeseries(name)
-            df_feature["date"] = pd.to_datetime(df_feature["date"])
-            features.append(df_feature)
-
-        # Merge all dataframes in the features list horizontally on the 'date'
-        # key / Mescla todos os dataframes na lista de feições horizontalmente
-        # na chave 'date'
-
-        df_aux = self.df_aux[["date", "AOI_average"]]
-        df_aux.date = pd.to_datetime(df_aux.date)
-
-        features.append(df_aux)
-        merged_df = features[0]
-        for df in features[1:]:
-            merged_df = pd.merge(merged_df, df, on="date", how="outer")
-
-        print(f"Merged features calculated for {len(features)} features.")
-        df = merged_df.copy()
-
-        df["date"] = pd.to_datetime(df["date"])
-
-        self.df_features = df
-
-    def plot_timeseries_features(self):
-        df = self.df_aux_features
-
-        # Melt the dataframe to have a long format / Transforma o dataframe para
-        # um formato longo
-        df_melted = df.melt(
-            id_vars="date",
-            var_name="Polygon",
-            value_name=self.series_indice.currentText(),
-        )
-
-        # Create the line plot with varied color and line dash / Cria o gráfico
-        # de linha com cor e traço variados
-        fig = px.line(
-            df_melted,
-            x="date",
-            y=self.series_indice.currentText(),
-            color="Polygon",
-            line_dash="Polygon",
-            title=f"Time Series - {self.series_indice.currentText()} - {self.vector_layer_combobox.currentText()}",
-        )
-        fig.update_layout(
-            yaxis_title=self.series_indice.currentText(),
-            title=f"Time Series - {self.series_indice.currentText()} - {self.vector_layer_combobox.currentText()}",
-            xaxis_title=None,  # Remove x-axis label
-        )
-        self.fig_2 = fig
-
-        self.webView_3.setHtml(
-            fig.to_html(include_plotlyjs="cdn", config=self.config)
-        )
-        print("Feature info calculated and plotted.")
 
     def combobox_2_update(self):
         print("combobox_2_update called")
         self.vector_layer_combobox.setCurrentIndex(
             self.vector_layer_combobox_2.currentIndex()
         )
-        self.vector_layer_combobox_3.setCurrentIndex(
-            self.vector_layer_combobox_2.currentIndex()
-        )
-
-    def combobox_3_update(self):
-        print("combobox_3_update called")
-        self.vector_layer_combobox.setCurrentIndex(
-            self.vector_layer_combobox_3.currentIndex()
-        )
-        self.vector_layer_combobox_2.setCurrentIndex(
-            self.vector_layer_combobox_3.currentIndex()
-        )
-
-    def reload_update2(self):
-        self.finaledit.setDate(self.finaledit_2.date())
-        self.incioedit.setDate(self.incioedit_2.date())
-        self.series_indice.setCurrentIndex(self.series_indice_2.currentIndex())
-
-    def reload_update3(self):
-        self.finaledit.setDate(self.finaledit_2.date())
-        self.incioedit.setDate(self.incioedit_2.date())
-        self.series_indice.setCurrentIndex(self.series_indice_3.currentIndex())
 
     def reload_update(self):
         self.finaledit_2.setDate(self.finaledit.date())
         self.incioedit_2.setDate(self.incioedit.date())
-        self.series_indice_2.setCurrentIndex(self.series_indice.currentIndex())
-        self.series_indice_3.setCurrentIndex(self.series_indice.currentIndex())
-
-    def clear_nasa_clicked(self):
-        """Clears the NASA data and updates the timeseries plot."""
-        """Limpa os dados da NASA e atualiza o gráfico de séries temporais."""
-        self.df_nasa = None
-        self.daily_data = None
-        self.plot_timeseries()
 
     def update_labels(self):
         """Updates the text of several labels based on the values of horizontal
         sliders."""
         """Atualiza o texto de vários rótulos com base nos valores dos
         sliders horizontais."""
-        self.label_cloud_aoi.setText(f"{self.horizontalSlider_local_pixel_limit.value()}%")
-        self.label_cloud_aoi_2.setText(f"{self.horizontalSlider_local_pixel_limit.value()}%")
-        self.horizontalSlider_local_pixel_limit_2.setValue(self.horizontalSlider_local_pixel_limit.value())
 
         self.label_coverage.setText(f"{self.horizontalSlider_aio_cover.value()}%")
         self.label_coverage_2.setText(f"{self.horizontalSlider_aio_cover.value()}%")
@@ -1061,9 +370,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         sliders."""
         """Atualiza o texto de vários rótulos com base nos valores dos
         sliders horizontais."""
-        self.label_cloud_aoi.setText(f"{self.horizontalSlider_local_pixel_limit_2.value()}%")
-        self.label_cloud_aoi_2.setText(f"{self.horizontalSlider_local_pixel_limit_2.value()}%")
-        self.horizontalSlider_local_pixel_limit.setValue(self.horizontalSlider_local_pixel_limit_2.value())
 
         self.label_coverage.setText(f"{self.horizontalSlider_aio_cover_2.value()}%")
         self.label_coverage_2.setText(f"{self.horizontalSlider_aio_cover_2.value()}%")
@@ -1131,18 +437,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             self.pop_warning("Please select an output folder first.")
             return
 
-        # existing_layers = QgsProject.instance().mapLayers().values()
-        # layer_names = [layer.name() for layer in existing_layers]
-        # if "Google Hybrid" not in layer_names:
-        #     if self.language == "pt":
-        #         self.pop_warning(
-        #             "Por favor, carregue a camada do Google Maps primeiro."
-        #         )
-        #     else:
-        #         # Show a warning message in English if the layer is not loaded
-        #         self.pop_warning("Please load the Google Maps layer first.")
-        #     self.drawing.setChecked(False)
-        #     return
+
 
         # Activate the extent drawing tool
         self.extent_tool = QgsMapToolExtent(iface.mapCanvas())
@@ -1222,37 +517,9 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             df = df[["date", "AOI_average", "image_id"]]
 
         name = (
-            f"{self.series_indice.currentText()}_{self.vector_layer_combobox.currentText()}_time_series.csv"
+            f"time_series.csv"
         )
         save_utils.save(df, name, self)
-
-    def salvar_clicked_2(self):
-        """Handles the event when the save button is clicked."""
-        """Manipula o evento quando o botão salvar é clicado."""
-        df = self.df_features
-        name = (
-            f"{self.series_indice.currentText()}_{self.vector_layer_combobox.currentText()}_time_series_features.csv"
-        )
-        save_utils.save(df, name, self)
-
-    def salvar_clicked_3(self):
-        """Handles the event when the save button is clicked."""
-        """Manipula o evento quando o botão salvar é clicado."""
-        df = self.df_points
-        name = (
-            f"{self.series_indice.currentText()}_{self.vector_layer_combobox.currentText()}_time_series_points.csv"
-        )
-        save_utils.save(df, name, self)
-
-    def salvar_nasa_clicked(self):
-        if self.df_nasa is None:
-            self.pop_warning("No NASA data to save.")
-            return
-        name = (
-            f"nasa_power_climate_{self.vector_layer_combobox.currentText()}.csv"
-        )
-
-        save_utils.save(self.daily_data, name, self)
 
     def datasrecorte_clicked(self):
         """Opens a dialog for selecting specific dates for the time series."""
@@ -1608,21 +875,18 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         autentication = getattr(self, 'autentication', False)
         if not autentication:
             if index != 0:
-                if self.language == "pt":
-                    QMessageBox.warning(self, "Acesso Negado", "Por favor, autentique-se primeiro!")
-                else:
-                    QMessageBox.warning(self, "Access Denied", "Please authenticate first!")
+                QMessageBox.warning(self, "Access Denied", "Please authenticate first!")
                 if _safe_set_current_index(0):
                     return # Stop processing this event as tab was reverted
 
         # --- UI Resizing Logic ---
         # Get 'resizeEvent' safely
         _resizeEvent = getattr(self, 'resizeEvent', None)
-        if index < 9:
+        if index < 6:
             if _resizeEvent and callable(_resizeEvent):
                 _resizeEvent("small")
             # else: print("Warning: resizeEvent method not found or not callable for 'small'.")
-        elif index >= 9:
+        elif index >= 6:
             if _resizeEvent and callable(_resizeEvent):
                 _resizeEvent("big")
             # else: print("Warning: resizeEvent method not found or not callable for 'big'.")
@@ -1637,17 +901,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
                 else:
                     print("Warning: centralizar method not found or not callable.")
 
-        # --- Tab 10: Data Frame (DF) Check ---
-        # Get 'df' safely; if not set, default to None
-        _df = getattr(self, 'df', None)
-        if index >= 10:
-            if _df is None:
-                if self.language == "pt":
-                    QMessageBox.warning(self, "Dados Ausentes", "Por favor, processe os dados nas abas anteriores primeiro.")
-                else:
-                    QMessageBox.warning(self, "Data Missing", "Please process data on previous tabs first.")
-                if _safe_set_current_index(9):
-                    return
 
         # --- Tab 1: Load Path Suggestion ---
         # Get 'path_suggestion_loaded' safely; if not set, default to False
@@ -1699,46 +952,17 @@ class AGLgisDialog(QDialog, FORM_CLASS):
 
         if index > 1:
             if _QPushButton_next_4 and not _QPushButton_next_4.isEnabled():
-                if self.language == 'pt':
-                    QMessageBox.warning(self, "Proceed Step-by-Step", "Por favor, complete a Passo 2 antes de prosseguir.")
-                else:
-                    QMessageBox.warning(self, "Proceed Step-by-Step", "Please complete Step 2 before proceeding.")
+                QMessageBox.warning(self, "Proceed Step-by-Step", "Please complete Step 2 before proceeding.")
                 if _safe_set_current_index(1):
                     return
 
         if index > 2:
             if _QPushButton_next and not _QPushButton_next.isEnabled():
-                if self.language == 'pt':
-                    QMessageBox.warning(self, "Proceed Step-by-Step", "Por favor, complete a Passo 3 antes de prosseguir.")
-                else:
-                    QMessageBox.warning(self, "Proceed Step-by-Step", "Please complete Step 3 before proceeding.")
+                QMessageBox.warning(self, "Proceed Step-by-Step", "Please complete Step 3 before proceeding.")
                 if _safe_set_current_index(2):
                     _resizeEvent("small")
                     return
 
-        # --- Tab 12: Load Fields ---
-        # Get 'plot1' safely; if not set, default to None
-        _plot1 = getattr(self, 'plot1', None)
-        if index == 12:
-            if _plot1 is not None:
-                print('load_fields')
-                _load_fields = getattr(self, 'load_fields', None)
-                if _load_fields and callable(_load_fields):
-                    _load_fields()
-                else:
-                    print("Warning: load_fields method not found or not callable.")
-
-        # --- Checkbox Capture Coordinates ---
-        # Get 'checkBox_captureCoordinates' safely
-        _checkBox_captureCoordinates = getattr(self, 'checkBox_captureCoordinates', None)
-        if index != 11:
-            if _checkBox_captureCoordinates:
-                try:
-                    _checkBox_captureCoordinates.setChecked(False)
-                except Exception as e:
-                    print(f"Error unchecking coordinate capture checkbox: {e}")
-            else:
-                print("Warning: checkBox_captureCoordinates not found or accessible.")
 
         _drawing = getattr(self, 'drawing', None)
         if index != 2:
@@ -1793,51 +1017,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         msg.setStyleSheet("font-size: 10pt;")
         msg.exec()
 
-    def pop_warning_2(self, aviso):
-        QApplication.restoreOverrideCursor()  # Restore the cursor if it was overridden
-
-        # Create a custom dialog
-        dialog = QDialog(self)
-        dialog.setWindowTitle("Resultados da busca")
-        
-        # Set up the main layout
-        layout = QVBoxLayout(dialog)
-        
-        # Add the warning message
-        message_label = QLabel(aviso)
-        layout.addWidget(message_label)
-        
-        # Create a horizontal layout for the buttons
-        button_layout = QHBoxLayout()
-        
-        # Create buttons
-        cancel_button = QPushButton("Cancelar (permanecer nesta aba)")
-        ok_button = QPushButton("OK (ir para a próxima aba)")
-        
-        # Add buttons to the horizontal layout
-        button_layout.addWidget(cancel_button)
-        button_layout.addStretch()  # This will push the OK button to the right
-        button_layout.addWidget(ok_button)
-        
-        # Add the button layout to the main layout
-        layout.addLayout(button_layout)
-        
-        # Connect button signals
-        ok_button.clicked.connect(dialog.accept)
-        cancel_button.clicked.connect(dialog.reject)
-        
-        # Set the stylesheet for the dialog
-        dialog.setStyleSheet("font-size: 10pt;")
-        
-        # Execute the dialog and return the result
-        result = dialog.exec()
-        
-        # Return which button was pressed
-        if result == QDialog.DialogCode.Accepted:
-            return QMessageBox.StandardButton.Ok
-        else:
-            return QMessageBox.StandardButton.Cancel
-
     def update_vector_clicked(self):
         self.load_vector_layers()
         self.get_selected_layer_path()
@@ -1888,17 +1067,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             for i in range(self.vector_layer_combobox.count())
         )
         self.vector_layer_combobox_2.setCurrentIndex(
-            self.vector_layer_combobox.currentIndex()
-        )
-
-        # Update the third combobox / Atualiza a terceira combobox
-        self.vector_layer_combobox_3.clear()
-        self.vector_layer_combobox_3.addItems(
-            self.vector_layer_combobox.itemText(i)
-            for i in range(self.vector_layer_combobox.count())
-        )
-
-        self.vector_layer_combobox_3.setCurrentIndex(
             self.vector_layer_combobox.currentIndex()
         )
 
@@ -1988,384 +1156,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             )
             return None
         
-    def calculate_vegetation_index(self, image, index_name):
-        """
-        Calculates the specified vegetation index for the given image using
-        Earth Engine functions directly.
-
-        Args:
-            image (ee.Image): The input Earth Engine image.
-            index_name (str): The name of the vegetation index to calculate
-                (e.g., "NDVI", "EVI").
-
-        Returns:
-            ee.Image: The image containing the calculated vegetation index, renamed
-                to "index".
-
-        Raises:
-            ValueError: If an unsupported vegetation index is specified.
-        """
-
-        #EVI 
-
-        def evi(image):
-            nir = image.select("B8").divide(10000)
-            red = image.select("B4").divide(10000)
-            blue = image.select("B2").divide(10000)
-            return image.expression(
-                "2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))",
-                {"NIR": nir, "RED": red, "BLUE": blue},
-            ).rename("index")
-        
-        def evi2(image):
-            nir = image.select("B8").divide(10000)
-            red = image.select("B4").divide(10000)
-            return image.expression(
-            "2.5 * ((NIR - RED) / (NIR + RED + 1))",
-            {"NIR": nir, "RED": red},
-            ).rename("index")
-
-        def savi(image):
-            nir = image.select("B8").divide(10000)
-            red = image.select("B4").divide(10000)
-            L = 0.5
-            return image.expression(
-                "(1 + L) * ((NIR - RED) / (NIR + RED + L))",
-                {"NIR": nir, "RED": red, "L": L},
-            ).rename("index")
-
-        def msavi(image):
-            nir = image.select("B8").divide(10000)
-            red = image.select("B4").divide(10000)
-            return image.expression(
-                "((2 * NIR + 1) - sqrt((2 * NIR + 1) ** 2 - 8 * (NIR - RED))) / 2",
-                {"NIR": nir, "RED": red},
-            ).rename("index")
-
-        def sfdvi(image):
-            return image.expression(
-                "((NIR + GREEN)/2 - (RED + REDEDGE)/2)",
-                {
-                    "NIR": image.select("B8").divide(10000),  # Near-Infrared
-                    "GREEN": image.select("B3").divide(10000),  # Green
-                    "RED": image.select("B4").divide(10000),  # Red
-                    "REDEDGE": image.select("B5").divide(10000),  # Red Edge
-                },
-            ).rename("index")
-
-        def cigreen(image):
-            nir = image.select("B8")
-            green = image.select("B3")
-            return image.expression(
-                "(NIR / GREEN) - 1", {"NIR": nir, "GREEN": green}
-            ).rename("index")
-        
-        def arvi(image):
-            nir = image.select("B8").divide(10000)
-            red = image.select("B4").divide(10000)
-            blue = image.select("B2").divide(10000)
-            return image.expression(
-                "(NIR - (2 * RED - BLUE)) / (NIR + (2 * RED - BLUE))",
-                {"NIR": nir, "RED": red, "BLUE": blue},
-            ).rename("index")
-        
-        def ndmi(image):
-            return image.normalizedDifference(["B8", "B11"]).rename("index")
-        
-        def nbr(image):
-            return image.normalizedDifference(["B8", "B12"]).rename("index")
-        
-        def sipi(image):
-            nir = image.select("B8").divide(10000)
-            red = image.select("B4").divide(10000)
-            blue = image.select("B2").divide(10000)
-            return image.expression(
-                "(NIR - BLUE) / (NIR - RED)",
-                {"NIR": nir, "RED": red, "BLUE": blue},
-            ).rename("index")
-        
-        def ndwi(image):
-            return image.normalizedDifference(["B3", "B8"]).rename("index")
-        
-        def reci(image):
-            nir = image.select("B8")
-            rededge = image.select("B5")
-            return image.expression(
-                "(NIR / REDEDGE) - 1",
-                {"NIR": nir, "REDEDGE": rededge},
-            ).rename("index")
-        
-        def mtci(image):
-            nir = image.select("B8")
-            rededge = image.select("B5")
-            red = image.select("B4")
-            return image.expression(
-                "(NIR - REDEDGE) / (REDEDGE - RED)",
-                {"NIR": nir, "REDEDGE": rededge, "RED": red},
-            ).rename("index")
-        
-        def mcari(image):
-            nir = image.select("B8").divide(10000)
-            red = image.select("B4").divide(10000)
-            green = image.select("B3").divide(10000)
-            return image.expression(
-                "((REDEDGE - RED) - 0.2 * (REDEDGE - GREEN)) * (REDEDGE / RED)",
-                {"REDEDGE": nir, "RED": red, "GREEN": green},
-            ).rename("index")
-        
-        def vari(image):
-            red = image.select("B4").divide(10000)
-            green = image.select("B3").divide(10000)
-            blue = image.select("B2").divide(10000)
-            return image.expression(
-                "(GREEN - RED) / (GREEN + RED - BLUE)",
-                {"GREEN": green, "RED": red, "BLUE": blue},
-            ).rename("index")
-         
-        def tvi(image):
-            nir = image.select("B8").divide(10000)
-            red = image.select("B4").divide(10000)
-            green = image.select("B3").divide(10000)
-            return image.expression(
-                "0.5 * (120 * (NIR - GREEN) - 200 * (RED - GREEN))",
-                {"NIR": nir, "RED": red, "GREEN": green},
-            ).rename("index")
-        
-        def custom(image):
-            # Add all bands to the custom index calculation
-            band1 = image.select("B1").divide(10000)  # Coastal aerosol
-            band2 = image.select("B2").divide(10000)  # Blue
-            band3 = image.select("B3").divide(10000)  # Green
-            band4 = image.select("B4").divide(10000)  # Red
-            band5 = image.select("B5").divide(10000)  # Red Edge 1
-            band6 = image.select("B6").divide(10000)  # Red Edge 2
-            band7 = image.select("B7").divide(10000)  # Red Edge 3
-            band8 = image.select("B8").divide(10000)  # NIR
-            band8a = image.select("B8A").divide(10000)  # Narrow NIR
-            band9 = image.select("B9").divide(10000)  # Water vapor
-            band11 = image.select("B11").divide(10000)  # SWIR 1
-            band12 = image.select("B12").divide(10000)  # SWIR 2
-
-            return image.expression(
-                self.custom_expression,
-                {
-                    "B1": band1,
-                    "B2": band2,
-                    "B3": band3,
-                    "B4": band4,
-                    "B5": band5,
-                    "B6": band6,
-                    "B7": band7,
-                    "B8": band8,
-                    "B8A": band8a,
-                    "B9": band9,
-                    "B11": band11,
-                    "B12": band12,
-                },
-            ).rename("index")
-
-        index_functions = {
-            "NDVI": lambda image: image.normalizedDifference(["B8", "B4"]).rename("index"),
-            "EVI": evi,
-            "EVI2": evi2,
-            "SAVI": savi,
-            "GNDVI": lambda image: image.normalizedDifference(["B8", "B3"]).rename("index"),
-            "MSAVI": msavi,
-            "SFDVI": sfdvi,
-            "CIgreen": cigreen,
-            "NDRE": lambda image: image.normalizedDifference(["B8", "B5"]).rename("index"),
-            "ARVI": arvi,
-            "NDMI": ndmi,
-            "NBR": nbr,
-            "SIPI": sipi,
-            "NDWI": ndwi,
-            "ReCI": reci,
-            "MTCI": mtci,
-            "MCARI": mcari,
-            "VARI": vari,
-            "TVI": tvi,
-            self.custom_expression_name + " (custom)": custom,
-        }
-
-        if index_name in index_functions:
-            index_image = index_functions[index_name](image)
-            return index_image
-        else:
-            raise ValueError(f"Unsupported vegetation index: {index_name}")
-
-    def load_index(self, temporary=False):
-        """Calculates a vegetation index, downloads the GeoTIFF, and adds it to
-        the QGIS project as a styled raster layer, ensuring unique names for
-        each layer."""
-        aoi = self.apply_buffer(self.aoi)
-        try:
-            print("First index clicked")
-            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-
-            vegetation_index = self.imagem_unica_indice.currentText()
-            date = [self.dataunica.currentText()]
-
-            first_image = self.sentinel2.filter(ee.Filter.inList("date", date)).first()
-            first_image = first_image.clip(aoi)
-
-            index_image = self.calculate_vegetation_index(first_image, vegetation_index)
-
-            # Prepare download URL and output filename
-            url = index_image.getDownloadURL(
-                {
-                    "scale": 10,
-                    "region": aoi.geometry().bounds().getInfo(),
-                    "format": "GeoTIFF",
-                    "crs": "EPSG:4326",  # Use WGS84 for compatibility
-                }
-            )
-            base_output_file = f"{vegetation_index}_{date[0]}.tiff"
-            output_file = self.get_unique_filename(base_output_file, temporary)
-
-            # Download the image
-            response = requests.get(url)
-            if response.status_code == 200:
-                with open(output_file, "wb") as f:
-                    f.write(response.content)
-                print(f"{vegetation_index} image downloaded as {output_file}")
-            else:
-                print(f"Failed to download image. HTTP Status: {response.status_code}")
-                return
-
-            # Prepare unique layer name
-            layer_name = f"{vegetation_index} {date[0]}"
-            base_name = layer_name
-            i = 1
-            while QgsProject.instance().mapLayersByName(layer_name):
-                layer_name = f"{base_name}_{i}"
-                i += 1
-            print(f"Layer name adjusted to '{layer_name}' to ensure uniqueness.")
-
-            # Add raster layer with styling
-            map_tools.load_raster_layer_colorful(
-                output_file, layer_name, vegetation_index, None
-            )
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
-        finally:
-            QApplication.restoreOverrideCursor()
-
-    def aggregate_index_collection(self, index_collection, metrica):
-        """Aggregates the index collection based on the specified metric."""
-        # Obter a primeira imagem como referência espacial
-        first_image = index_collection.first()
-
-        # Dicionário para mapear métricas às funções correspondentes
-        metric_functions = {
-            "Mean": lambda: index_collection.mean(),
-            "Média": lambda: index_collection.mean(),
-            "Max": lambda: index_collection.max(),
-            "Máximo": lambda: index_collection.max(),
-            "Min": lambda: index_collection.min(),
-            "Mínimo": lambda: index_collection.min(),
-            "Median": lambda: index_collection.median(),
-            "Mediana": lambda: index_collection.median(),
-            "Amplitude": lambda: index_collection.max().subtract(index_collection.min()),
-            "Standard Deviation": lambda: index_collection.reduce(ee.Reducer.stdDev()),
-            "Desvio Padrão": lambda: index_collection.reduce(ee.Reducer.stdDev()),
-            "Sum": lambda: index_collection.sum(),
-            "Soma": lambda: index_collection.sum(),
-            "Area Under Curve (AUC)": lambda: self.calculate_auc(index_collection),
-        }
-
-        # Verificar se a métrica é válida
-        if metrica not in metric_functions:
-            valid_metrics = ", ".join(metric_functions.keys())
-            raise ValueError(f"Invalid metric: {metrica}. Valid metrics are: {valid_metrics}")
-
-        # Calcular a métrica
-        result_image = metric_functions[metrica]()
-
-        # Garantir que a imagem resultante tenha o mesmo alinhamento espacial da primeira imagem
-        aligned_image = result_image.setDefaultProjection(
-            first_image.projection()
-        ).clip(first_image.geometry())
-
-        return aligned_image
-
-
-    def calculate_auc(self, index_collection):
-        """
-        Calculates the Area Under Curve (AUC) with proper spatial alignment.
-        """
-        print("Calculating AUC...")
-        count = index_collection.size().getInfo()
-        if count < 2:
-            raise ValueError("Insufficient number of images to calculate AUC.")
-        
-        # Get the first image to use as a spatial reference
-        first_image = index_collection.first()
-        
-        # Convert collection to multi-band image while preserving projection
-        index_stack = index_collection.toBands()
-        
-        # Define a valid mask (minimum mask value of all bands)
-        valid_mask = index_stack.mask().reduce(ee.Reducer.min())
-        
-        # Get the band names (each band corresponds to a date)
-        bands = index_stack.bandNames()
-        
-        # Define the start date
-        start_date = ee.Date(self.inicio)
-        
-        # Create a list of timestamps in days relative to the start date
-        timestamps = index_collection.aggregate_array("system:time_start").map(
-            lambda date: ee.Date(date).difference(start_date, "day")
-        )
-        
-        # Ensure timestamps is a valid list and calculate time differences
-        time_diffs = ee.List(timestamps).slice(0, -1).zip(ee.List(timestamps).slice(1)).map(
-            lambda pair: ee.Number(ee.List(pair).get(1)).subtract(ee.Number(ee.List(pair).get(0)))
-        )
-        
-        # Convert the index stack to an array
-        index_array = index_stack.toArray()
-        
-        # Calculate the sums of index values for consecutive images
-        sums = index_array.arraySlice(0, 1).add(index_array.arraySlice(0, 0, -1))
-        
-        # Calculate the AUC using the trapezoidal rule
-        auc = ee.Image.constant(time_diffs).toArray().multiply(sums).divide(2).arrayReduce(
-            ee.Reducer.sum(), [0]
-        )
-        
-        # Extract result and apply mask
-        auc_image = auc.arrayGet([0]).updateMask(valid_mask)
-        
-        # Create a new image with the same footprint as the first image
-        final_image = first_image.select(0).multiply(0).add(auc_image)
-        
-        return final_image
-
-
-    def calculate_timeseries(self):
-        """Calculates the time series of the selected vegetation index for the AOI."""
-        vegetation_index = self.series_indice.currentText()
-        aoi = self.apply_buffer(self.aoi)
-
-        result = self.sentinel2.map(lambda image: self.calculate_index_with_mean(image, vegetation_index, aoi))
-        result = result.filter(ee.Filter.notNull(["mean_index"]))
-
-        # Retrieve dates and mean index values separately using aggregate_array
-        dates = result.aggregate_array("date").getInfo()
-        mean_indices = result.aggregate_array("mean_index").getInfo()
-        image_ids = result.aggregate_array("system:index").getInfo()
-
-        # Combine the dates, mean indices, and image IDs into a DataFrame
-        df = pd.DataFrame({"date": dates, "AOI_average": mean_indices, "image_id": image_ids})
-
-        # Optional: Smoothing or further processing
-        self.df = df.copy()
-        self.df_aux = df.copy()
-        self.load_dates()
-        self.plot_timeseries()
-
     def apply_buffer(self, aoi):
         """Applies a buffer to the AOI geometry."""
         buffer_distance = self.horizontalSlider_buffer.value()
@@ -2387,216 +1177,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             ).get("index")
         )
         return image.set({"mean_index": mean_index})
-
-    def feature_calculate_timeseries(self, name):
-        """Calculates the time series of the selected vegetation index for a specific feature."""
-        vegetation_index = self.series_indice.currentText()
-        aoi = self.apply_buffer(self.aoi_feature)
-
-        result = self.sentinel2_selected_dates.map(lambda image: self.calculate_index_with_mean(image, vegetation_index, aoi))
-        result = result.filter(ee.Filter.notNull(["mean_index"]))
-
-        # Retrieve dates and mean index values separately using aggregate_array
-        dates = result.aggregate_array("date").getInfo()
-        mean_indices = result.aggregate_array("mean_index").getInfo()
-
-        print(f"Creating DataFrame for {name}")
-        return pd.DataFrame({"date": dates, name: mean_indices})
-
-    def point_calculate_timeseries(self, aoi, name):
-        """Calculates the time series of the selected vegetation index for a specific point."""
-        vegetation_index = self.series_indice.currentText()
-
-        result = self.sentinel2_selected_dates.map(lambda image: self.calculate_index_with_mean(image, vegetation_index, aoi))
-        result = result.filter(ee.Filter.notNull(["mean_index"]))
-
-        # Retrieve dates and mean index values separately using aggregate_array
-        dates = result.aggregate_array("date").getInfo()
-        mean_indices = result.aggregate_array("mean_index").getInfo()
-
-        print(f"Creating DataFrame for {name}")
-        return pd.DataFrame({"date": dates, name: mean_indices})
-
-
-    def load_rgb(self, temporary=False, min_val=200, max_val=2300):
-        """
-        Loads Sentinel-2 RGB image into QGIS with proper band names.
-
-        
-        """
-        aoi = self.apply_buffer(self.aoi)
-
-            
-        # Set the cursor to indicate processing
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-
-        try:
-            date = [self.dataunica.currentText()]
-            print(f"Selected date: {date}")
-
-            first_image = self.sentinel2.filter(
-                ee.Filter.inList("date", date)
-            ).first()
-
-            # Clip image to AOI
-            
-
-            # Select the bands we want
-            bands = [
-                "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B8A", "B9", "B11", "B12"
-            ]
-            
-            first_image = first_image.select(bands)
-            first_image = first_image.clip(aoi)
-
-            # Get the acquisition date and define download region
-            region = aoi.geometry().bounds().getInfo()["coordinates"]
-
-            # Generate download URL
-            try:
-                url = first_image.getDownloadURL(
-                    {
-                        "scale": 10,
-                        "region": region,
-                        "format": "GeoTIFF",
-                        "crs": "EPSG:4326"# Use WGS84 for compatibility
-                    }
-                )
-            except Exception as e:
-                self.pop_warning(f"Failed to generate download URL: {e}")
-                return
-
-            # Define output file
-            base_output_file = f"Sentinel2_AllBands_{date[0]}.tiff"
-            output_file = self.get_unique_filename(base_output_file, temporary)
-            temp_file = output_file + "_temp.tiff"
-
-            # Download the image
-            try:
-                response = requests.get(url, stream=True)
-                response.raise_for_status()
-                with open(output_file, "wb") as f:
-                    for chunk in response.iter_content(chunk_size=8192):
-                        if chunk:
-                            f.write(chunk)
-                print(f"Image downloaded to {output_file}")
-            except requests.exceptions.RequestException as e:
-                self.pop_warning(f"Error downloading image: {e}")
-                return
-
-            # Define descriptive band names
-            band_names = [
-                "Coastal aerosol (B1)",
-                "Blue (B2)",
-                "Green (B3)",
-                "Red (B4)",
-                "Red Edge 1 (B5)",
-                "Red Edge 2 (B6)",
-                "Red Edge 3 (B7)",
-                "NIR (Broad) (B8)",
-                "NIR (Narrow) (B8A)",
-                "Water Vapour (B9)",
-                "SWIR 1 (B11)",
-                "SWIR 2 (B12)",
-            ]
-
-            # Modify the GeoTIFF to include band names
-            try:
-                # Open the source dataset
-                src_ds = gdal.Open(output_file)
-                if not src_ds:
-                    self.pop_warning(f"Failed to open the downloaded file: {output_file}")
-                    return
-
-                # Get band count and GeoTIFF properties
-                band_count = src_ds.RasterCount
-                print(f"Downloaded image has {band_count} bands")
-                
-                # Create a copy with the same properties
-                driver = gdal.GetDriverByName("GTiff")
-                dst_ds = driver.CreateCopy(temp_file, src_ds, strict=1)
-                
-                # Set band names in the new file
-                for i in range(min(band_count, len(band_names))):
-                    band = dst_ds.GetRasterBand(i + 1)  # 1-based indexing
-                    band.SetDescription(band_names[i])
-                
-                # Close datasets to flush to disk
-                dst_ds = None
-                src_ds = None
-                
-                # Replace original file with the modified one
-                os.remove(output_file)
-                os.rename(temp_file, output_file)
-                
-                print(f"Created GeoTIFF with named bands: {output_file}")
-            except Exception as e:
-                self.pop_warning(f"Error modifying GeoTIFF: {e}")
-                print(traceback.format_exc())
-                # If an error occurred during modification, we might still have the original file
-                if os.path.exists(temp_file):
-                    os.remove(temp_file)
-
-            # Add the image as a raster layer in QGIS
-            layer_name = f"Sentinel-2 RGB {date[0]}"
-            layer = QgsRasterLayer(output_file, layer_name)
-            if not layer.isValid():
-                self.pop_warning(f"Failed to load the layer: {output_file}")
-                return
-
-            # Create a new MultiBandColorRenderer for RGB
-            renderer = QgsMultiBandColorRenderer(
-                layer.dataProvider(),
-                4,  # Red band (B4, 1-based index)
-                3,  # Green band (B3)
-                2,  # Blue band (B2)
-            )
-
-            # Set contrast enhancement for each band (Red, Green, Blue)
-            try:
-                red_ce = QgsContrastEnhancement(layer.dataProvider().dataType(4))
-                red_ce.setMinimumValue(min_val)
-                red_ce.setMaximumValue(max_val)
-                red_ce.setContrastEnhancementAlgorithm(
-                    QgsContrastEnhancement.StretchToMinimumMaximum
-                )
-
-                green_ce = QgsContrastEnhancement(layer.dataProvider().dataType(3))
-                green_ce.setMinimumValue(min_val)
-                green_ce.setMaximumValue(max_val)
-                green_ce.setContrastEnhancementAlgorithm(
-                    QgsContrastEnhancement.StretchToMinimumMaximum
-                )
-
-                blue_ce = QgsContrastEnhancement(layer.dataProvider().dataType(2))
-                blue_ce.setMinimumValue(min_val)
-                blue_ce.setMaximumValue(max_val)
-                blue_ce.setContrastEnhancementAlgorithm(
-                    QgsContrastEnhancement.StretchToMinimumMaximum
-                )
-
-                renderer.setRedContrastEnhancement(red_ce)
-                renderer.setGreenContrastEnhancement(green_ce)
-                renderer.setBlueContrastEnhancement(blue_ce)
-            except Exception as e:
-                print(f"Error configuring renderer: {e}")
-                return
-
-            # Set the renderer to the layer
-            layer.setRenderer(renderer)
-
-            # Add the raster layer to the QGIS project
-            QgsProject.instance().addMapLayer(layer, addToLegend=False)
-            root = QgsProject.instance().layerTreeRoot()
-            root.insertChildNode(0, QgsLayerTreeLayer(layer))
-            iface.setActiveLayer(layer)
-
-        except Exception as e:
-            self.pop_warning(f"An error occurred: {e}")
-            print(traceback.format_exc())
-        finally:
-            QApplication.restoreOverrideCursor()
-
 
     def zoom_to_layer(self, layer_name, margin_ratio=0.3):
         """
@@ -2725,94 +1305,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
 
         self.sentinel2_selected_dates = sentinel2_selected_dates
 
-    def composite_clicked(self, temporary=False):
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        self.sentinel2_selected_dates_update()
-        self.composite(temporary)
-        QApplication.restoreOverrideCursor()
-
-    def composite(self, temporary):
-        """
-        Calculates a composite of a vegetation index, downloads it clipped to the
-        precise AOI using an explicit mask, and loads it into QGIS.
-        NOTE: For a real plugin, this entire logic should be moved into a QgsTask
-        to avoid freezing the QGIS UI.
-        """
-        try:
-            QgsMessageLog.logMessage("Starting vegetation index composite process.", "MyPlugin", Qgis.Info)
-
-            # Get the selected vegetation index and metric for aggregation
-            indice_vegetacao = self.indice_composicao.currentText()
-            metrica = self.metrica.currentText()
-
-            # Function to calculate the desired vegetation index and preserve the date
-            def calculate_index(image):
-                # Ensure the image has the necessary bands before calculating the index.
-                # It's good practice to add checks or handle missing bands gracefully.
-                index_image = self.calculate_vegetation_index(image, indice_vegetacao)
-                # copyProperties is good for retaining metadata like system:time_start
-                return index_image.copyProperties(image, ["system:time_start"])
-
-            # Apply the index calculation to the filtered collection
-            index_collection = self.sentinel2_selected_dates.map(calculate_index)
-
-            # Aggregate the index collection based on the selected metric
-            final_image = self.aggregate_index_collection(index_collection, metrica)
-
-            # --- IMPORTANT: Cast to float before masking for robust NoData handling ---
-            # This ensures that the image data type can correctly represent the NoData value.
-            final_image = final_image.toFloat()
-
-            # --- KEY CHANGE: Use updateMask for more reliable clipping ---
-            # Apply buffer if needed. Ensure self.aoi is an ee.Geometry object.
-            aoi = self.apply_buffer(self.aoi)
-
-            # 1. Create an explicit mask from the AOI geometry.
-            # ee.Image(1).clip(aoi) creates an image where the AOI is 1 and outside is 0.
-            # .mask() converts this to a mask where 1 is valid data and 0 is NoData.
-            mask = ee.Image(1).clip(aoi).mask()
-
-            # 2. Apply this mask to the final composite image.
-            # This operation sets pixels outside the mask to NoData (transparent).
-            final_image_masked = final_image.updateMask(mask)
-
-            # 3. Define the download region using the BOUNDING BOX of the AOI.
-            # This ensures the downloaded GeoTIFF is a rectangle that fully covers the AOI.
-            # The actual clipping to the irregular shape is handled by updateMask.
-            download_region = aoi.geometry().bounds().getInfo()
-
-            url = final_image_masked.getDownloadURL(
-                {
-                    "scale": 10,
-                    "region": download_region,
-                    "format": "GeoTIFF",
-                    'crs': 'EPSG:4326',  # Optional: specify CRS if needed
-                }
-            )
-
-            base_output_file = f"{metrica}_{indice_vegetacao}.tiff"
-            output_file = self.get_unique_filename(base_output_file, temporary)
-            response = requests.get(url)
-            with open(output_file, "wb") as f:
-                f.write(response.content)
-            print(f"{indice_vegetacao} image downloaded as {output_file}")
-
-            layer_name = f"{indice_vegetacao} {metrica}"
-            # Carrega a camada raster com estilo colorido no QGIS
-            map_tools.load_raster_layer_colorful(
-                output_file, layer_name, indice_vegetacao, self.metrica.currentText()
-            )
-
-
-        except requests.exceptions.RequestException as e:
-            # Catches network-related errors (e.g., connection refused, DNS error, timeout)
-            # and HTTP errors (4xx, 5xx) caught by response.raise_for_status().
-            QgsMessageLog.logMessage(f"Network error or error from GEE server: {e}", "MyPlugin", Qgis.Critical)
-        except Exception as e:
-            # It's good practice to log the full traceback for debugging complex errors from GEE
-            import traceback
-            QgsMessageLog.logMessage(f"An unexpected error occurred: {e}\n{traceback.format_exc()}", "MyPlugin", Qgis.Critical)
-
     def on_file_changed(self, file_path):
         """Slot called when the selected file changes."""
         """Slot chamado quando o arquivo selecionado muda."""
@@ -2844,12 +1336,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             print(f"Last output folder loaded: {last_folder}")
         else:
             print("No previously selected output folder found.")
-
-    def index_explain(self):
-        explanation = vegetation_index_info.vegetation_indices.get(
-            self.series_indice.currentText()
-        )
-        self.textBrowser_index_explain.setHtml(explanation)
 
     def load_vector_function(self, shapefile_path=None):
         """
@@ -2928,11 +1414,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
                 self.vector_layer_combobox.currentIndex()
             )
 
-            self.vector_layer_combobox_3.setCurrentIndex(
-                self.vector_layer_combobox.currentIndex()
-            )
-            # self.next_clicked()
-
             self.aoi_ckecked = True
             self.aoi_ckecked_function()
 
@@ -2986,418 +1467,17 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.aoi = self.load_vector_function()
         self.inicio = self.incioedit.date().toString("yyyy-MM-dd")
         self.final = self.finaledit.date().toString("yyyy-MM-dd")
-        self.nuvem = self.horizontalSlider_total_pixel_limit.value()
-        self.QCheckBox_sav_filter.setChecked(False)
-        self.filtro_grau.setCurrentIndex(0)
-        self.window_len.setCurrentIndex(0)
-        self.df_nasa = None
         self.df_aux = None
-        self.df_points = None
 
     def loadtimeseries_clicked(self):
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
             self.resetting()
-            self.ee_load_collection()
-            self.calculate_timeseries()
             self.plot_timeseries()
-            
-            self.centralizar()
-            self.webView_3.setHtml("")
-            self.webView_2.setHtml("")
-            print("Time series loaded successfully.")
-            
-            if self.language == "pt":
-                response = self.pop_warning_2("\n".join(self.collection_info_pt))
-            else:
-                response = self.pop_warning_2("\n".join(self.collection_info))
-
-            if response == QMessageBox.StandardButton.Ok:
-                print("User clicked OK")
-                self.tabWidget.setCurrentIndex(10)
-            else:
-                print("User clicked Cancel")
-
         except Exception as e:
-            print(f"An error occurred: {e}")
-            QApplication.restoreOverrideCursor()
-            self.pop_warning(f"An error occurred: {e}")
+            print(f"Error during timeseries loading: {e}")
+
         QApplication.restoreOverrideCursor()
-
-    def loadtimeseries_clicked_2(self):
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        try:
-            self.calculate_timeseries()
-
-            if self.df is None or self.df.empty:
-
-                if self.language == "pt":
-                    self.pop_warning(
-                        "Nenhum dado disponível para os critérios selecionados. "
-                        "O foco na região dentro da área de interesse (AOI) deve ser usado com um vetor "
-                        "que esteja realmente contido pela AOI original, ou altere o índice de vegetação "
-                        "selecionado para a série temporal mantendo a seleção atual de datas "
-                        "(mesma coleção de imagens)."
-                    )
-                else:
-                    self.pop_warning(
-                        "No data available for the selected criteria. "
-                        "Focus on region within area of interest (AOI) is to be used with a vector "
-                        "that is actually contained by the original AOI, or change the selected "
-                        "vegetation index for the time series while maintaining the current date "
-                        "selection (same image collection)."
-                    )
-                QApplication.restoreOverrideCursor()
-                return
-            
-            
-            self.df_ajust()
-            self.plot_timeseries()
-
-            self.centralizar()
-            self.webView_3.setHtml("")
-            self.webView_2.setHtml("")
-            print("Time series loaded successfully.")
-            
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            QApplication.restoreOverrideCursor()
-            self.pop_warning(f"An error occurred: {e}")
-        QApplication.restoreOverrideCursor()
-
-    def ee_load_collection(self):
-
-        self.collection_info = []
-        self.collection_info_pt = []
-        """Loads the Earth Engine image collection based on user-defined
-        criteria."""
-        """Carrega a coleção de imagens do Earth Engine com base nos critérios
-        definidos pelo usuário."""
-
-        # Find the centroid of the AOI and check if the area is within the limit
-
-        # Reset settings and set the cursor to indicate processing
-
-        # Retrieve user inputs for date range, cloud percentage, and AOI
-        inicio = self.inicio
-        final = self.final
-        nuvem = self.nuvem
-        aoi = self.apply_buffer(self.aoi)
-        coverage_threshold = self.horizontalSlider_aio_cover.value() / 100
-        local_pixel_limit = self.horizontalSlider_local_pixel_limit.value()
-        print(f"Coverage threshold: {coverage_threshold}")
-
-        # Define the Sentinel-2 image collection with filtering by date, bounds,
-        # and cloud percentage
-        sentinel2 = (
-            ee.ImageCollection("COPERNICUS/S2_SR_HARMONIZED")
-            .filterDate(inicio, final)
-            .filterBounds(aoi)
-            #.filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", nuvem))
-            .map(lambda image: image.set("date", image.date().format("YYYY-MM-dd")))
-        )
-
-        # Check if the collection is empty
-        original_count = sentinel2.size().getInfo()
-        print(f"Collection size before any filtering: {original_count}")
-        self.collection_info.append(f"Collection size before any filtering: {original_count}")
-        self.collection_info_pt.append(f"Tamanho da coleção antes de qualquer filtro: {original_count}")
-
-        if original_count == 0:
-            QApplication.restoreOverrideCursor()
-            self.pop_warning(
-                "No images found for the selected criteria. Please select a larger date range or less strick filtering and try again."
-            )
-            return
-
-        # Apply cloud percentage filter
-        sentinel2 = sentinel2.filter(ee.Filter.lt("CLOUDY_PIXEL_PERCENTAGE", nuvem))
-
-        # Check if the collection is empty after cloud filtering
-        cloud_filtered_count = sentinel2.size().getInfo()
-        print(f"Collection size after cloud filtering: {cloud_filtered_count}")
-        self.collection_info.append(f"Collection size after tile cloud percentage filtering (Step 8): {cloud_filtered_count}")
-        self.collection_info_pt.append(f"Tamanho da coleção após filtro de limite de nuvem na cena (Passo 8): {cloud_filtered_count}")
-
-        if cloud_filtered_count == 0:
-            QApplication.restoreOverrideCursor()
-            self.pop_warning(
-                "No images found for the selected criteria. Please select a larger date range or less strick filtering and try again."
-            )
-            return
-
-
-        # Apply AOI coverage filter to the image collection
-        if coverage_threshold > 0:
-            sentinel2 = self.AOI_coverage_filter(sentinel2, aoi, coverage_threshold)
-            if sentinel2.size().getInfo() == 0:
-                QApplication.restoreOverrideCursor()
-                self.pop_warning(
-                    "No images found for the selected criteria. Please select a larger date range or less strick filtering and try again."
-                )
-                return
-
-        if local_pixel_limit > 0:
-            # Apply local pixel limit filter to the image collection
-
-            #aoi_SCL = aoi.map(lambda feature: feature.buffer(300))
-            sentinel2 = self.SCL_filter(sentinel2, aoi, local_pixel_limit)
-            if sentinel2.size().getInfo() == 0:
-                QApplication.restoreOverrideCursor()
-                self.pop_warning(
-                    "No images found for the selected criteria. Please select a larger date range or less strick filtering and try again."
-                )
-                return
-
-        # Apply cloud and shadow mask if the checkbox is checked
-        if self.mask.isChecked():
-            sentinel2 = self.SCL_mask(sentinel2, aoi)
-            if sentinel2.size().getInfo() == 0:
-                QApplication.restoreOverrideCursor()
-                self.pop_warning(
-                    "No images found for the selected criteria. Please select a larger date range or less strick filtering and try again."
-                )
-                return
-
-        sentinel2 = self.uniqueday_collection(sentinel2)
-
-        # Store the filtered image collection in the instance variable
-        self.sentinel2 = sentinel2
-
-    def uniqueday_collection(self, sentinel2):
-        """
-        Filters the image collection to include only one image per day,
-        prioritizing images with higher AOI coverage ratio, using Earth Engine
-        operations.
-        """
-        print("Filtering to unique days using Earth Engine...")
-        print("Original collection size:", sentinel2.size().getInfo())
-
-        def process_date(date):
-            """Finds the image with the highest coverage for a given date."""
-            date_start = ee.Date(date)
-            date_end = date_start.advance(1, 'day')
-
-            # Filter for images within the day
-            daily_images = sentinel2.filterDate(date_start, date_end)
-
-            # Sort by coverage_ratio (descending) and get the first image
-            best_image = daily_images.sort('coverage_ratio', False).first()
-            return best_image
-
-        # Get list of unique dates
-        dates = sentinel2.aggregate_array("date").distinct()
-
-        # Map the process_date function over the list of unique dates
-        unique_images = ee.List(dates.map(process_date))
-
-        # Filter out any null values (in case a date has no images)
-        unique_images = unique_images.removeAll([None])
-
-        # Convert back to an ImageCollection
-        filtered_collection = ee.ImageCollection(unique_images)
-
-        print(f"Collection size after keeping only unique dates: {filtered_collection.size().getInfo()}")
-        self.collection_info.append(f"Collection size after keeping only unique dates: {filtered_collection.size().getInfo()}")
-        self.collection_info_pt.append(f"Tamanho da coleção após manter apenas datas únicas: {filtered_collection.size().getInfo()}")
-
-        return filtered_collection
-
-    def AOI_coverage_filter(self, sentinel2, aoi, coverage_threshold):
-        """Filters the image collection based on the coverage of the Area of
-        Interest (AOI)."""
-        """Filtra a coleção de imagens com base na cobertura da Área de
-        Interesse (AOI)."""
-        print("Applying AOI coverage filter...")
-        if coverage_threshold == 1:
-            coverage_threshold = 0.9999  # Avoid floating-point comparison issues
-
-        # Coverage Ratio Function
-        aoi_geometry = aoi.first().geometry()
-        aoi_area = aoi_geometry.area()
-
-        def calculate_coverage_ratio(image):
-            """
-            Calculates the ratio of the AOI area covered by the image.
-
-            Args:
-                image (ee.Image): The Sentinel-2 image.
-
-            Returns:
-                ee.Image: The original image with an added 'coverage_ratio'
-                    property.
-            """
-            # Compute the intersection geometry between AOI and image footprint
-            intersection = aoi_geometry.intersection(image.geometry(), ee.ErrorMargin(1))
-
-            # Calculate the area of the intersection
-            intersection_area = intersection.area()
-
-            # Calculate the coverage ratio (intersection area / AOI area)
-            coverage_ratio = intersection_area.divide(aoi_area)
-
-            # Set the coverage ratio as a property of the image
-            return image.set("coverage_ratio", coverage_ratio)
-
-        # -------------------------------
-        # Step 6: Apply Coverage Ratio Calculation
-        # -------------------------------
-
-        # Map the coverage ratio function over the Sentinel-2 collection
-        sentinel2_with_ratio = sentinel2.map(calculate_coverage_ratio)
-
-        # -------------------------------
-        # Step 7: Filter Based on Coverage Ratio
-        # -------------------------------
-
-        # Define a filter to keep images with coverage_ratio >=
-        # coverage_threshold
-        coverage_filter = ee.Filter.gte("coverage_ratio", coverage_threshold)
-
-        # Apply the filter to get the final collection
-        covering_colection = sentinel2_with_ratio.filter(coverage_filter)
-
-
-        # Get the number of images after coverage filtering
-        filtered_count = covering_colection.size().getInfo()
-
-        print(
-            f"Collection size after filtro >= {coverage_threshold*100}% AOI coverage: {filtered_count}"
-        )
-        self.collection_info.append(f"Collection size after AOI overlap filter (Step 6): {filtered_count}")
-        self.collection_info_pt.append(f"Tamanho da coleção após filtro de sobreposição com a AOI (Passo 6): {filtered_count}")
-        
-        return covering_colection
-
-    def SCL_filter(self, sentinel2, aoi, valid_pixel_threshold):
-        """Filters the image collection based on the percentage of valid pixels
-        within the AOI."""
-        """Filtra a coleção de imagens com base na porcentagem de pixels
-        válidos dentro da AOI."""
-
-        print("Applying SCL filter...")
-        #print("Original collection size:", sentinel2.size().getInfo())
-
-        scl_classes_behavior = {
-            0: self.mask_class0.isChecked(),  # No data
-            1: self.mask_class1.isChecked(),  # Saturated/defective
-            2: self.mask_class2.isChecked(),  # Dark features
-            3: self.mask_class3.isChecked(),  # Cloud shadows
-            4: self.mask_class4.isChecked(),  # Vegetation
-            5: self.mask_class5.isChecked(),  # Bare soils
-            6: self.mask_class6.isChecked(),  # Water
-            7: self.mask_class7.isChecked(),  # Cloud low probability
-            8: self.mask_class8.isChecked(),  # Cloud medium probability
-            9: self.mask_class9.isChecked(),  # Cloud high probability
-            10: self.mask_class10.isChecked(),  # Thin cirrus
-            11: self.mask_class11.isChecked(),  # Snow or ice
-        }
-
-        def mask_cloud_and_shadows(image):
-            scl = image.select("SCL")
-            # Start with an all-inclusive mask
-            mask = ee.Image.constant(1)
-            # Apply exclusions
-            for class_value, include in scl_classes_behavior.items():
-                if include:
-                    mask = mask.And(scl.neq(class_value))
-
-            masked_image = image.updateMask(mask)
-
-            # Calculate the percentage of valid pixels
-            total_pixels = (
-                image.select(0)
-                .reduceRegion(reducer=ee.Reducer.count(), geometry=aoi, scale=10)
-                .get("B1")
-            )
-
-            valid_pixels = (
-                masked_image.select(0)
-                .reduceRegion(reducer=ee.Reducer.count(), geometry=aoi, scale=10)
-                .get("B1")
-            )
-
-            percentage_valid = (
-                ee.Number(valid_pixels).divide(total_pixels).multiply(100)
-            )
-
-            # Add the percentage of valid pixels as a property
-            return masked_image.set("percentage_valid_pixels", percentage_valid)
-
-            # Apply the cloud and shadow mask function
-
-        # Apply the cloud and shadow mask function to the image collection
-        sentinel2_masked = sentinel2.map(mask_cloud_and_shadows)
-
-        # Filter the collection based on the valid pixel threshold
-        filtered_collection = sentinel2_masked.filter(
-            ee.Filter.gte("percentage_valid_pixels", valid_pixel_threshold)
-        )
-
-        masked_timestamps = filtered_collection.aggregate_array("system:time_start").getInfo()
-
-        sentinel2 =  sentinel2.filter(
-            ee.Filter.inList("system:time_start", ee.List(masked_timestamps))
-        )
-
-        print("Collection size after SCL filter:", sentinel2.size().getInfo())
-        self.collection_info.append(f"Collection size after SCL filter (Step 9): {sentinel2.size().getInfo()}")
-        self.collection_info_pt.append(f"Tamanho da coleção após filtro SCL (Passo 9): {sentinel2.size().getInfo()}")
-        return sentinel2
-
-    def SCL_mask(self, sentinel2, aoi):
-        """Applies a Scene Classification Layer (SCL) mask based on user selections."""
-        print("Applying SCL MASK...")
-
-        # Get user-selected classes to mask
-        selected_classes = [class_value for class_value, include in {
-            0: self.mask_class0.isChecked(),   # No data
-            1: self.mask_class1.isChecked(),   # Saturated/defective
-            2: self.mask_class2.isChecked(),   # Dark features
-            3: self.mask_class3.isChecked(),   # Cloud shadows
-            4: self.mask_class4.isChecked(),   # Vegetation
-            5: self.mask_class5.isChecked(),   # Bare soils
-            6: self.mask_class6.isChecked(),   # Water
-            7: self.mask_class7.isChecked(),   # Cloud low probability
-            8: self.mask_class8.isChecked(),   # Cloud medium probability
-            9: self.mask_class9.isChecked(),   # Cloud high probability
-            10: self.mask_class10.isChecked(), # Thin cirrus
-            11: self.mask_class11.isChecked()  # Snow or ice
-        }.items() if include]
-
-        def mask_selected_classes(image):
-            scl = image.select("SCL")
-            # Build mask efficiently using logical OR across selected classes
-            mask = scl.neq(selected_classes[0]) if selected_classes else ee.Image.constant(1)
-            for class_value in selected_classes[1:]:
-                mask = mask.And(scl.neq(class_value))  # Keep only allowed pixels
-
-            return image.updateMask(mask)
-
-        return sentinel2.map(mask_selected_classes)
-
-    def clear_all_raster_layers(self):
-        """Removes all raster layers from the QGIS project, except for the
-        Google Hybrid layer."""
-        """Remove todas as camadas raster do projeto QGIS, exceto a camada
-        Google Hybrid."""
-        # Get the current project instance
-        project = QgsProject.instance()
-
-        # Create a copy of the layer list to avoid issues with removing during
-        # iteration
-        layers_to_remove = list(project.mapLayers().values())
-
-        # Iterate over the copied list
-        for layer in layers_to_remove:
-            if (
-                layer.type() == QgsMapLayer.RasterLayer
-                and layer.name() != "Google Hybrid"
-            ):
-                layer_name = layer.name()  # Store the layer name before removing it
-                project.removeMapLayer(layer.id())  # Use layer.id() for removal
-                print(f"Removed raster layer: {layer_name}")
-                iface.mapCanvas().refresh()
 
     def df_ajust(self):
         """Adjusts the main DataFrame based on the selected dates."""
@@ -3410,211 +1490,13 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         else:
             self.df_aux = df.copy()
 
-    def df_ajust_features(self):
-        """Adjusts the features DataFrame based on the selected dates."""
-        """Ajusta o DataFrame de feições com base nas datas selecionadas."""
-        df = self.df_features.copy()
-        if self.recorte_datas:
-            df = df[df["date"].astype(str).isin([str(d) for d in self.recorte_datas])]
-            self.df_aux_features = df.copy()
-        else:
-            self.df_aux_features = df.copy()
-
-    def df_ajust_points(self):
-        """Adjusts the points DataFrame based on the selected dates."""
-        """Ajusta o DataFrame de pontos com base nas datas selecionadas."""
-        df = self.df_points.copy()
-        if self.recorte_datas:
-            df = df[df["date"].astype(str).isin([str(d) for d in self.recorte_datas])]
-            self.df_aux_points = df.copy()
-        else:
-            self.df_aux_points = df.copy()
-
-    def df_run_filter(self):
-        """Applies the Savitzky-Golay filter to smooth the time series data."""
-        """Aplica o filtro Savitzky-Golay para suavizar os dados da série
-        temporal."""
-        df = self.df_aux.copy()
-        try:
-            if self.window_len.count() == 0:
-                self.window_len.clear()
-                self.window_len.addItems(
-                    list(map(str, list(range(7, len(df) + 1))))
-                )
-                self.window_len.setCurrentIndex(0)
-
-            window_length = int(self.window_len.currentText())
-            polyorder = int(self.filtro_grau.currentText().split("%")[0])
-            print(f"Window length: {window_length}, Polyorder: {polyorder}")
-
-            if window_length > len(df):
-                window_length = len(df)
-                self.window_len.setCurrentIndex(len(df) - 5)
-                print(f"Window length too large. Using maximum value: {window_length}")
-
-            # Apply Savitzky-Golay filter to smooth the time series
-
-            df["savitzky_golay_filtered"] = savgol_filter(
-                df["AOI_average"], window_length=window_length, polyorder=polyorder
-            )
-            self.df_aux = df.copy()
-            return True
-        except Exception as e:
-            self.pop_warning(
-                f"Not enough images to apply the Savitzky-Golay filter. Please select a larger date range or less strick filtering."
-            )
-            self.QCheckBox_sav_filter.setChecked(False)
-            self.plot_timeseries()
-            return False
-
-
     def plot_timeseries(self):
-        """Plots the time series data, optionally applying the Savitzky-Golay
-        filter."""
-        """Plota os dados da série temporal, opcionalmente aplicando o filtro
-        Savitzky-Golay."""
         print("plot1 started")
-
-        # Prepare to plot
-        myFile = io.StringIO()
-        if self.QCheckBox_sav_filter.isChecked() and self.df_run_filter():
-            df = self.df_aux
-            try:
-                self.fig = go.Figure()
-                self.fig.add_trace(
-                    go.Scatter(
-                        x=df["date"],
-                        y=df["AOI_average"],
-                        mode="lines",
-                        name=self.series_indice.currentText(),
-                        line=dict(color="green"),
-                    )
-                )
-                self.fig.add_trace(
-                    go.Scatter(
-                        x=df["date"],
-                        y=df["savitzky_golay_filtered"],
-                        mode="lines",
-                        name=f"{self.series_indice.currentText()} filtered",
-                        line=dict(color="purple"),
-                    )
-                )
-            except Exception as e:
-                self.pop_warning(f"An error occurred while plotting: {e}")
-                self.QCheckBox_sav_filter.setChecked(False)
-        else:
-            df = self.df_aux
-            self.fig = go.Figure()
-            self.fig.add_trace(
-                go.Scatter(
-                    x=df["date"],
-                    y=df["AOI_average"],
-                    mode="lines",
-                    name=self.series_indice.currentText(),
-                    line=dict(color="green"),
-                )
-            )
-
-        self.fig.update_layout(
-            # xaxis_title='Date',
-            yaxis_title=self.series_indice.currentText(),
-            title=f"Time Series - {self.series_indice.currentText()} - {self.vector_layer_combobox.currentText()}               Image count: {len(df)}",
-        )
-
-        self.fig.update_traces(
-            hovertemplate="date = %{x|%Y-%m-%d}<br>average_ndvi = %{y:.2f}<extra></extra>"
-        )
-
-        # Configurations for the Plotly plot
-        self.config = {
-            "displaylogo": False,
-            "modeBarButtonsToRemove": [
-                "toImage",
-                "sendDataToCloud",
-                "zoom2d",
-                "pan2d",
-                "select2d",
-                "lasso2d",
-                "zoomIn2d",
-                "zoomOut2d",
-                "autoScale2d",
-                "resetScale2d",
-                "hoverClosestCartesian",
-                "hoverCompareCartesian",
-                "zoom3d",
-                "pan3d",
-                "orbitRotation",
-                "tableRotation",
-                "resetCameraLastSave",
-                "resetCameraDefault3d",
-                "hoverClosest3d",
-                "zoomInGeo",
-                "zoomOutGeo",
-                "resetGeo",
-                "hoverClosestGeo",
-                "hoverClosestGl2d",
-                "hoverClosestPie",
-                "toggleHover",
-                "toggleSpikelines",
-                "resetViews",
-            ],
-        }
-
-        if isinstance(self.df_nasa, pd.DataFrame):
-            # Add bar plot (set below the line explicitly)
-            self.fig.add_trace(
-                go.Bar(
-                    x=self.df_nasa.index,
-                    y=self.df_nasa["Precipitation"],
-                    name="Monthly Precipitation",
-                    yaxis="y2",
-                    marker_color="blue",
-                    opacity=0.4,
-                )
-            )
-
-            # Ensure correct layout and layering
-            self.fig.update_layout(
-                yaxis=dict(
-                    title=self.series_indice.currentText(),
-                ),
-                yaxis2=dict(
-                    title="Precipitation (mm)",
-                    overlaying="y",
-                    side="right",
-                ),
-                xaxis=None,
-            )
-
-        # Update layout and render the plot
-        self.webView.setHtml(
-            self.fig.to_html(include_plotlyjs="cdn", config=self.config)
-        )
-
-        self.plot1 = True
-
 
     def open_browser(self):
         """Opens the plot in a web browser."""
         """Abre o gráfico em um navegador da web."""
         self.fig.show()
-
-    def open_browser_2(self):
-        """Opens the feature plot in a web browser."""
-        """Abre o gráfico de feições em um navegador da web."""
-        try:
-            self.fig_2.show()
-        except:
-            self.pop_warning("No data to plot")
-
-    def open_browser_3(self):
-        """Opens the points plot in a web browser."""
-        """Abre o gráfico de pontos em um navegador da web."""
-        
-        try:
-            self.fig_3.show()
-        except:
-            self.pop_warning("No data to plot")
 
     def load_dates(self):
         """Loads the unique dates from the DataFrame into the date selection
@@ -3625,40 +1507,3 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.dataunica.clear()
         self.dataunica.addItems(datas)
         self.dataunica.setCurrentIndex(self.dataunica.count() - 1)
-
-    def add_dot_from_coordinates(self):
-
-        print("Adding dot from coordinates...")
-
-        """Adds a dot to the map from latitude and longitude values entered in QLineEdit widgets.
-        Handles commas as decimal separators and validates input with regex.
-        """
-        longitude_text = self.mLineEdit_longitude.text()
-        latitude_text = self.mLineEdit_latitude.text()
-
-        # Replace commas with periods
-        longitude_text = longitude_text.replace(",", ".")
-        latitude_text = latitude_text.replace(",", ".")
-
-        # Regex to validate the format
-        regex = r"[-+]?\d+(\.\d*)?"
-        if not (re.match(regex, longitude_text) and re.match(regex, latitude_text)):
-            self.pop_warning("Invalid longitude/latitude format. Please enter numeric values.")
-            return
-
-        try:
-            longitude = float(longitude_text)
-            latitude = float(latitude_text)
-        except ValueError:
-            self.pop_warning("Invalid longitude/latitude format. Please enter numeric values.")
-            return
-
-        # Check if the coordinate capture tool is active
-        if self.coordinate_capture_tool is None:
-            print("Coordinate capture tool is not active.")
-            self.checkBox_captureCoordinates.setChecked(True)
-            self.activate_coordinate_capture_tool()
-        
-        # Call the method to add the point
-        self.coordinate_capture_tool.add_dot_from_coordinates(longitude, latitude)
-        self.process_coordinates(longitude, latitude)
