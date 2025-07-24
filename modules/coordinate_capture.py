@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QColor
+from qgis.PyQt.QtGui import QColor
 from qgis.core import (
     QgsWkbTypes,
     QgsGeometry,
@@ -23,17 +23,17 @@ class CoordinateCaptureTool(QgsMapToolEmitPoint):
     # Global variable to store colors
     DOT_COLORS = []
 
-    def __init__(self, canvas, AGLgis_dialog):
+    def __init__(self, canvas, aglgis_dialog):
         """
         Initializes the CoordinateCaptureTool.
 
         Args:
             canvas: The QgsMapCanvas to interact with.
-            AGLgis_dialog: A dialog object with a method to process coordinates.
+            aglgis_dialog: A dialog object with a method to process coordinates.
         """
         QgsMapToolEmitPoint.__init__(self, canvas)
         self.canvas = canvas
-        self.AGLgis_dialog = AGLgis_dialog
+        self.aglgis_dialog = aglgis_dialog
         self.rubber_bands = []  # Use snake_case for variable names
         self.latitude = None
         self.longitude = None
@@ -66,7 +66,7 @@ class CoordinateCaptureTool(QgsMapToolEmitPoint):
     def process_and_display(self, point_project):
         """
         Transforms the point to WGS84, displays a dot on the canvas, and
-        processes the coordinates using the AGLgis_dialog.
+        processes the coordinates using the aglgis_dialog.
 
         Args:
             point_project: The point in the project's CRS.
@@ -83,7 +83,7 @@ class CoordinateCaptureTool(QgsMapToolEmitPoint):
 
         # Call the Earth Engine function with WGS84 coordinates
         if self.latitude is not None and self.longitude is not None:
-            self.AGLgis_dialog.process_coordinates(self.longitude, self.latitude)
+            self.aglgis_dialog.process_coordinates(self.longitude, self.latitude)
 
     def transform_to_wgs84(self, point_project):
         """

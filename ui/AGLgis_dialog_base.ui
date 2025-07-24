@@ -62,7 +62,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>12</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="contextMenuPolicy">
@@ -75,7 +75,7 @@
     <bool>false</bool>
    </property>
    <property name="currentIndex">
-    <number>12</number>
+    <number>9</number>
    </property>
    <property name="usesScrollButtons">
     <bool>false</bool>
@@ -92,7 +92,7 @@
       <rect>
        <x>360</x>
        <y>290</y>
-       <width>371</width>
+       <width>391</width>
        <height>41</height>
       </rect>
      </property>
@@ -128,28 +128,16 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>721</width>
+       <width>741</width>
        <height>221</height>
       </rect>
      </property>
      <property name="html">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;AGLgis QGIS Plugin Information&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;h3 style=&quot; margin-top:10px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:14pt; font-weight:600; color:#333333;&quot;&gt;To use this plugin, you need the following:&lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; font-weight:600; color:#333333;&quot;&gt; &lt;/span&gt;&lt;/h3&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot; style=&quot; margin-top:0px; margin-bottom:3px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;a href=&quot;https://earthengine.google.com/&quot;&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline; color:#007bff;&quot;&gt;An Active Google Earth Engine Account:&lt;/span&gt;&lt;/a&gt; A registered and approved GEE account (provides access to datasets, APIs, and tools). &lt;/li&gt;
-&lt;li style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot; style=&quot; margin-top:0px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;a href=&quot;https://console.cloud.google.com&quot;&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline; color:#007bff;&quot;&gt;A Google Cloud Project (and its ID):&lt;/span&gt;&lt;/a&gt; A Google Cloud project linked to your GEE account (handles authentication, API enablement, and quota management for Earth Engine services). &lt;/li&gt;&lt;/ul&gt;
-&lt;p style=&quot; margin-top:5px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;a href=&quot;https://caioarantes.github.io/AGLgis-qgis-plugin/&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; text-decoration: underline; color:#007bff;&quot;&gt;Click here&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt; to access the step-by-step guide. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:5px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt;The authentication token will be stored locally, allowing you to skip browser login during future authentications. To switch accounts, click 'Reset Authentication'. &lt;/span&gt;&lt;/p&gt;
-&lt;h3 style=&quot; margin-top:10px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:14pt; font-weight:600; color:#333333;&quot;&gt;About the Author&lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; font-weight:600; color:#333333;&quot;&gt; &lt;/span&gt;&lt;/h3&gt;
-&lt;p style=&quot; margin-top:5px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt;The AGLgis plugin was developed by &lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; font-weight:600; color:#333333;&quot;&gt;Caio Arantes&lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt;, an Agricultural Engineering student passionate about precision agriculture and geotechnology, as part of his final graduation project. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:5px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt;Feel free to reach out if you have any questions or need further assistance.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:5px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt;📧 &lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; font-weight:600; color:#333333;&quot;&gt;Email:&lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt; &lt;/span&gt;&lt;a href=&quot;mailto:caiosimplicioarantes@gmail.com&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; text-decoration: underline; color:#007bff;&quot;&gt;caiosimplicioarantes@gmail.com&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt; &lt;br /&gt;🔗 &lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; font-weight:600; color:#333333;&quot;&gt;LinkedIn:&lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt; &lt;/span&gt;&lt;a href=&quot;https://www.linkedin.com/in/caioarantes&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; text-decoration: underline; color:#007bff;&quot;&gt;linkedin.com/in/caioarantes&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt; &lt;br /&gt;💻 &lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; font-weight:600; color:#333333;&quot;&gt;GitHub:&lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt; &lt;/span&gt;&lt;a href=&quot;https://github.com/caioarantes&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; text-decoration: underline; color:#007bff;&quot;&gt;github.com/caioarantes&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
-&lt;h3 style=&quot; margin-top:10px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:14pt; font-weight:600; color:#333333;&quot;&gt;Supervisors&lt;/span&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; font-weight:600; color:#333333;&quot;&gt; &lt;/span&gt;&lt;/h3&gt;
-&lt;p style=&quot; margin-top:5px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot;&gt;This project was supervised by: &lt;/span&gt;&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot; style=&quot; margin-top:0px; margin-bottom:3px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Prof. Dr. Lucas Rios do Amaral&lt;/span&gt; - &lt;a href=&quot;https://www.linkedin.com/in/lucas-rios-do-amaral-bb302449/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007bff;&quot;&gt;More about the supervisor&lt;/span&gt;&lt;/a&gt; &lt;/li&gt;
-&lt;li style=&quot; font-family:'sans-serif'; font-size:12pt; color:#333333;&quot; style=&quot; margin-top:0px; margin-bottom:5px; margin-left:8px; margin-right:8px; -qt-block-indent:0; text-indent:0px; line-height:130%;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;M.Sc. Isabella Alves da Cunha&lt;/span&gt; - &lt;a href=&quot;https://www.linkedin.com/in/isabella-alves-da-cunha-a110011b9/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007bff;&quot;&gt;More about the co-supervisor&lt;/span&gt;&lt;/a&gt; &lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="overwriteMode">
       <bool>true</bool>
@@ -166,7 +154,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>210</x>
        <y>240</y>
-       <width>521</width>
+       <width>541</width>
        <height>41</height>
       </rect>
      </property>
@@ -213,7 +201,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>90</y>
-       <width>721</width>
+       <width>741</width>
        <height>91</height>
       </rect>
      </property>
@@ -230,7 +218,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>701</width>
+        <width>721</width>
         <height>31</height>
        </rect>
       </property>
@@ -281,7 +269,7 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>650</x>
        <y>290</y>
        <width>101</width>
        <height>41</height>
@@ -311,7 +299,7 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="geometry">
       <rect>
-       <x>510</x>
+       <x>530</x>
        <y>290</y>
        <width>101</width>
        <height>41</height>
@@ -335,7 +323,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>721</width>
+       <width>741</width>
        <height>101</height>
       </rect>
      </property>
@@ -352,7 +340,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>630</x>
         <y>40</y>
-        <width>81</width>
+        <width>101</width>
         <height>41</height>
        </rect>
       </property>
@@ -411,7 +399,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>120</y>
-       <width>721</width>
+       <width>741</width>
        <height>111</height>
       </rect>
      </property>
@@ -473,7 +461,7 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="geometry">
       <rect>
-       <x>620</x>
+       <x>640</x>
        <y>290</y>
        <width>111</width>
        <height>41</height>
@@ -545,7 +533,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>721</width>
+       <width>741</width>
        <height>271</height>
       </rect>
      </property>
@@ -851,7 +839,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="QPushButton_next_2">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>650</x>
        <y>290</y>
        <width>101</width>
        <height>41</height>
@@ -880,7 +868,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>721</width>
+       <width>741</width>
        <height>271</height>
       </rect>
      </property>
@@ -932,7 +920,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>80</y>
-        <width>701</width>
+        <width>721</width>
         <height>181</height>
        </rect>
       </property>
@@ -947,7 +935,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>540</x>
         <y>30</y>
-        <width>171</width>
+        <width>191</width>
         <height>41</height>
        </rect>
       </property>
@@ -964,7 +952,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="QPushButton_next_5">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>650</x>
        <y>290</y>
        <width>101</width>
        <height>41</height>
@@ -1018,7 +1006,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>721</width>
+       <width>741</width>
        <height>271</height>
       </rect>
      </property>
@@ -1038,7 +1026,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>651</width>
+        <width>671</width>
         <height>21</height>
        </rect>
       </property>
@@ -1073,7 +1061,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_coverage">
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>690</x>
         <y>40</y>
         <width>51</width>
         <height>21</height>
@@ -1106,7 +1094,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>80</y>
-        <width>701</width>
+        <width>721</width>
         <height>181</height>
        </rect>
       </property>
@@ -1123,7 +1111,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="QPushButton_next_3">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>650</x>
        <y>290</y>
        <width>101</width>
        <height>41</height>
@@ -1213,7 +1201,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="QPushButton_next_6">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>650</x>
        <y>290</y>
        <width>101</width>
        <height>41</height>
@@ -1237,7 +1225,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>721</width>
+       <width>741</width>
        <height>271</height>
       </rect>
      </property>
@@ -1254,7 +1242,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>80</y>
-        <width>701</width>
+        <width>721</width>
         <height>181</height>
        </rect>
       </property>
@@ -1276,7 +1264,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_buffer">
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>690</x>
         <y>40</y>
         <width>51</width>
         <height>21</height>
@@ -1299,7 +1287,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>651</width>
+        <width>671</width>
         <height>21</height>
        </rect>
       </property>
@@ -1345,7 +1333,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>721</width>
+       <width>741</width>
        <height>271</height>
       </rect>
      </property>
@@ -1365,7 +1353,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>40</y>
-        <width>651</width>
+        <width>671</width>
         <height>21</height>
        </rect>
       </property>
@@ -1400,7 +1388,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_cloud">
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>690</x>
         <y>40</y>
         <width>41</width>
         <height>21</height>
@@ -1420,7 +1408,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>80</y>
-        <width>701</width>
+        <width>721</width>
         <height>181</height>
        </rect>
       </property>
@@ -1462,7 +1450,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="QPushButton_next_7">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>650</x>
        <y>290</y>
        <width>101</width>
        <height>41</height>
@@ -1491,7 +1479,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>721</width>
+       <width>741</width>
        <height>271</height>
       </rect>
      </property>
@@ -1511,7 +1499,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>651</width>
+        <width>671</width>
         <height>21</height>
        </rect>
       </property>
@@ -1546,7 +1534,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_cloud_aoi">
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>690</x>
         <y>30</y>
         <width>51</width>
         <height>21</height>
@@ -1566,7 +1554,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>150</y>
-        <width>701</width>
+        <width>721</width>
         <height>121</height>
        </rect>
       </property>
@@ -1821,7 +1809,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>60</y>
-        <width>701</width>
+        <width>721</width>
         <height>81</height>
        </rect>
       </property>
@@ -1890,7 +1878,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="QPushButton_next_8">
      <property name="geometry">
       <rect>
-       <x>630</x>
+       <x>650</x>
        <y>290</y>
        <width>101</width>
        <height>41</height>
@@ -3112,9 +3100,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QComboBox" name="filtro_grau">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>180</x>
         <y>70</y>
-        <width>41</width>
+        <width>51</width>
         <height>22</height>
        </rect>
       </property>
@@ -3164,7 +3152,7 @@ p, li { white-space: pre-wrap; }
        </font>
       </property>
       <property name="text">
-       <string>Order of the polynomial:</string>
+       <string>Polynomial Order:</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -3224,9 +3212,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QComboBox" name="window_len">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>180</x>
         <y>110</y>
-        <width>41</width>
+        <width>51</width>
         <height>22</height>
        </rect>
       </property>
@@ -3698,7 +3686,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>691</width>
+       <width>751</width>
        <height>51</height>
       </rect>
      </property>
@@ -3715,7 +3703,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>260</x>
         <y>10</y>
-        <width>201</width>
+        <width>241</width>
         <height>31</height>
        </rect>
       </property>
@@ -3728,9 +3716,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="update_vector_3">
       <property name="geometry">
        <rect>
-        <x>470</x>
+        <x>510</x>
         <y>10</y>
-        <width>31</width>
+        <width>41</width>
         <height>31</height>
        </rect>
       </property>
@@ -3771,9 +3759,9 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>620</x>
+        <x>670</x>
         <y>10</y>
-        <width>61</width>
+        <width>71</width>
         <height>31</height>
        </rect>
       </property>
@@ -3793,7 +3781,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QComboBox" name="series_indice_3">
       <property name="geometry">
        <rect>
-        <x>510</x>
+        <x>560</x>
         <y>10</y>
         <width>101</width>
         <height>31</height>
@@ -3889,7 +3877,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>470</x>
+        <x>370</x>
         <y>20</y>
         <width>61</width>
         <height>16</height>
@@ -3907,7 +3895,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>720</x>
+        <x>620</x>
         <y>15</y>
         <width>81</width>
         <height>21</height>
@@ -3925,7 +3913,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QgsFilterLineEdit" name="mLineEdit_longitude">
       <property name="geometry">
        <rect>
-        <x>800</x>
+        <x>700</x>
         <y>9</y>
         <width>171</width>
         <height>31</height>
@@ -3947,9 +3935,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="add_dot">
       <property name="geometry">
        <rect>
-        <x>980</x>
+        <x>880</x>
         <y>10</y>
-        <width>131</width>
+        <width>101</width>
         <height>31</height>
        </rect>
       </property>
@@ -3965,7 +3953,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QgsFilterLineEdit" name="mLineEdit_latitude">
       <property name="geometry">
        <rect>
-        <x>540</x>
+        <x>440</x>
         <y>10</y>
         <width>171</width>
         <height>31</height>
@@ -3987,8 +3975,26 @@ p, li { white-space: pre-wrap; }
        <string notr="true"/>
       </property>
      </widget>
+     <widget class="QPushButton" name="clear_button_points">
+      <property name="geometry">
+       <rect>
+        <x>990</x>
+        <y>10</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Clear Analysis</string>
+      </property>
+     </widget>
     </widget>
-    <widget class="QWebView" name="webView_3" native="true">
+    <widget class="QWebView" name="webView_2" native="true">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -4018,28 +4024,10 @@ p, li { white-space: pre-wrap; }
       </url>
      </property>
     </widget>
-    <widget class="QPushButton" name="clear_button_points">
-     <property name="geometry">
-      <rect>
-       <x>1010</x>
-       <y>170</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Clear Analysis</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="salvar_3">
      <property name="geometry">
       <rect>
-       <x>830</x>
+       <x>960</x>
        <y>170</y>
        <width>171</width>
        <height>31</height>
@@ -4061,7 +4049,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="navegador_3">
      <property name="geometry">
       <rect>
-       <x>650</x>
+       <x>780</x>
        <y>170</y>
        <width>171</width>
        <height>31</height>
@@ -4083,7 +4071,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="datasrecorte_3">
      <property name="geometry">
       <rect>
-       <x>430</x>
+       <x>560</x>
        <y>170</y>
        <width>211</width>
        <height>31</height>
@@ -4102,9 +4090,8 @@ p, li { white-space: pre-wrap; }
        <normaloff>../medias/icons8-calendário-50.png</normaloff>../medias/icons8-calendário-50.png</iconset>
      </property>
     </widget>
-    <zorder>webView_3</zorder>
+    <zorder>webView_2</zorder>
     <zorder>groupBox_13</zorder>
-    <zorder>clear_button_points</zorder>
     <zorder>salvar_3</zorder>
     <zorder>navegador_3</zorder>
     <zorder>datasrecorte_3</zorder>
@@ -4220,7 +4207,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </widget>
-    <widget class="QWebView" name="webView_2" native="true">
+    <widget class="QWebView" name="webView_3" native="true">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -4316,7 +4303,7 @@ p, li { white-space: pre-wrap; }
        <normaloff>../medias/icons8-calendário-50.png</normaloff>../medias/icons8-calendário-50.png</iconset>
      </property>
     </widget>
-    <zorder>webView_2</zorder>
+    <zorder>webView_3</zorder>
     <zorder>groupBox_16</zorder>
     <zorder>salvar_2</zorder>
     <zorder>navegador_2</zorder>

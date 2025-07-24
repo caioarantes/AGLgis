@@ -12,7 +12,7 @@ from paver.easy import *
 
 options(
     plugin=Bunch(
-        name='AGLgis',
+        name='aglgis',
         ext_libs=path('extlibs'),
         source_dir=path('.'),
         package_dir=path('.'),
@@ -26,8 +26,8 @@ options(
             "test",
             "medias",
             "i18",
-            'modules'
-            "AGLgis.zip"
+            'modules',
+            "aglgis.zip"
         ]
     ),
 )
@@ -119,5 +119,5 @@ def make_zip(zipFile, options):
     for root, dirs, files in os.walk(src_dir):
         for f in filter_excludes(files):
             relpath = os.path.relpath(root, '.')
-            zipFile.write(path(root) / f, path('AGLgis') / path(relpath) / f)
+            zipFile.write(path(root) / f, path('aglgis') / path(relpath) / f)
         filter_excludes(dirs)

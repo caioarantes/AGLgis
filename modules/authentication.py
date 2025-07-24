@@ -1,12 +1,11 @@
-# AGLgis_plugin/modules/authentication.py
+# aglgis_plugin/modules/authentication.py
 import os
 import platform
 import shutil
 import re
-from PyQt5.QtCore import QSettings
-from PyQt5.QtWidgets import QMessageBox, QApplication
+from qgis.PyQt.QtCore import QSettings, Qt
+from qgis.PyQt.QtWidgets import QMessageBox, QApplication
 import ee
-from PyQt5.QtCore import Qt
 
 
 def loadProjectId(self):
@@ -61,10 +60,7 @@ def auth(self):
 
             if assets.get("assets") is not None:  # Valid project detected
                 print("Default project is valid.")
-                if self.language == "pt":
-                    self.pop_warning("Autenticação bem-sucedida!")
-                else:  
-                    self.pop_warning("Authentication successful!")
+                self.pop_warning("Authentication successful!")
                 self.autentication = True
                 self.next_clicked()
             else:

@@ -5,15 +5,15 @@
 [general]
 name=AGLgis
 qgisMinimumVersion=3.0
-description=AGLgis
+description=GLgis is a graphical interface designed to simplify the use of the Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine package in QGIS.  
 version=0.1
-author=Caio Arantes, Mateus Pinto
+author=Caio Arantes
 email=caiosimplicioarantes@gmail.com
 
-about=AGLgis is a QGIS plugin designed to seamlessly integrate with Google Earth Engine (GEE) and the ee_s1_ard package
+about=GLgis is a graphical interface designed to simplify the use of the Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine package in QGIS.  
 
-tracker=https://github.com/caioarantes/AGLgis-qgis-plugin/issues
-repository=https://github.com/caioarantes/AGLgis-qgis-plugin
+tracker=https://github.com/caioarantes/aglgis
+repository=https://github.com/caioarantes/aglgis
 # End of mandatory metadata
 
 # Recommended items:
@@ -25,7 +25,7 @@ hasProcessingProvider=no
 # Tags are comma separated with spaces allowed
 tags=python
 
-homepage=https://caioarantes.github.io/AGLgis
+homepage=https://caioarantes.github.io/aglgis
 category=Plugins
 icon=media/icon.png
 # experimental flag
@@ -44,4 +44,7 @@ Category of the plugin: Raster, Vector, Database or Web
 
 # If the plugin can run on QGIS Server.
 server=False
+
+#QT5 support comming soon
+#supportsQt6=True
 

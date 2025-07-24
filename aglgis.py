@@ -28,7 +28,7 @@ from qgis.PyQt.QtWidgets import QAction
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Import the code for the dialog
-from .AGLgis_dialog import AGLgisDialog
+from .aglgis_dialog import AGLgisDialog
 import os.path
 
 
@@ -125,7 +125,7 @@ class AGLgis:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = ':/plugins/AGLgis-qgis-plugin/icon.png'
+        icon_path = ':/plugins/aglgis-qgis-plugin/icon.png'
         self.add_action(
             icon_path,
             text=self.tr(u'AGLgis'),
@@ -147,7 +147,7 @@ class AGLgis:
         if self.dlg:
             self.dlg.close()
 
-    # In your main plugin class (AGLgis.py)
+    # In your main plugin class (aglgis.py)
     def run(self):
         """Run method that shows the modeless dialog"""
         
