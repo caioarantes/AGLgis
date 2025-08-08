@@ -45,7 +45,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import urllib.request
 import ee
-
+from ee_s1_ard import S1ARDImageCollection
 from functools import partial
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
@@ -293,16 +293,14 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.QPushButton_next.clicked.connect(self.next_clicked)
         self.QPushButton_next_2.clicked.connect(self.next_clicked)
         self.QPushButton_next_4.clicked.connect(self.next_clicked)
-        self.QPushButton_next_6.clicked.connect(self.next_clicked)
         self.QPushButton_back.clicked.connect(self.back_clicked)
         self.QPushButton_back_2.clicked.connect(self.back_clicked)
         self.QPushButton_back_4.clicked.connect(self.back_clicked)
-        self.QPushButton_back_6.clicked.connect(self.back_clicked)
         self.QPushButton_back_7.clicked.connect(self.back_clicked)
         self.loadtimeseries.clicked.connect(self.loadtimeseries_clicked)
         self.navegador.clicked.connect(self.open_browser)
         self.datasrecorte.clicked.connect(self.datasrecorte_clicked)
-        self.QPushButton_skip.clicked.connect(lambda: self.tabWidget.setCurrentIndex(5))
+        self.QPushButton_skip.clicked.connect(lambda: self.tabWidget.setCurrentIndex(4))
 
         self.salvar.clicked.connect(self.salvar_clicked)
         self.drawing.stateChanged.connect(self.drawing_clicked)
@@ -319,11 +317,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.radioButton_3years.clicked.connect(lambda: self.last_clicked(3 * 12))
         self.radioButton_5years.clicked.connect(lambda: self.last_clicked(5 * 12))
         self.combo_year.currentIndexChanged.connect(self.selected_year_clicked)
-
-
-        self.horizontalSlider_buffer.valueChanged.connect(self.update_labels)
-        self.horizontalSlider_buffer_2.valueChanged.connect(self.update_labels_2)
-
         self.incioedit.dateChanged.connect(self.reload_update)
 
         self.finaledit.dateChanged.connect(self.reload_update)
@@ -341,27 +334,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
     def reload_update(self):
         self.finaledit_2.setDate(self.finaledit.date())
         self.incioedit_2.setDate(self.incioedit.date())
-
-    def update_labels(self):
-        """Updates the text of several labels based on the values of horizontal
-        sliders."""
-        """Atualiza o texto de vários rótulos com base nos valores dos
-        sliders horizontais."""
-
-        self.label_buffer.setText(f"{self.horizontalSlider_buffer.value()}m")
-        self.label_buffer_2.setText(f"{self.horizontalSlider_buffer.value()}m")
-        self.horizontalSlider_buffer_2.setValue(self.horizontalSlider_buffer.value())
-
-    def update_labels_2(self):
-        """Updates the text of several labels based on the values of horizontal
-        sliders."""
-        """Atualiza o texto de vários rótulos com base nos valores dos
-        sliders horizontais."""
-
-        self.label_buffer.setText(f"{self.horizontalSlider_buffer_2.value()}m")
-        self.label_buffer_2.setText(f"{self.horizontalSlider_buffer_2.value()}m")
-        self.horizontalSlider_buffer.setValue(self.horizontalSlider_buffer_2.value())
-
 
     def open_link(self, url):
         """Open the clicked link in the default web browser."""
@@ -853,11 +825,11 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         # --- UI Resizing Logic ---
         # Get 'resizeEvent' safely
         _resizeEvent = getattr(self, 'resizeEvent', None)
-        if index < 6:
+        if index < 5:
             if _resizeEvent and callable(_resizeEvent):
                 _resizeEvent("small")
             # else: print("Warning: resizeEvent method not found or not callable for 'small'.")
-        elif index >= 6:
+        elif index >= 5:
             if _resizeEvent and callable(_resizeEvent):
                 _resizeEvent("big")
             # else: print("Warning: resizeEvent method not found or not callable for 'big'.")
@@ -1126,18 +1098,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
                 f"Layer '{layer_name}' with ID '{layer_id}' not found in the project."
             )
             return None
-        
-    def apply_buffer(self, aoi):
-        """Applies a buffer to the AOI geometry."""
-        buffer_distance = self.horizontalSlider_buffer.value()
-        if buffer_distance != 0:
-            print(f"Buffer distance: {buffer_distance} meters")
-            aoi = aoi.map(lambda feature: feature.buffer(buffer_distance))
-            #self.aoi = aoi
-            return aoi
-        else:
-            print("No buffer applied")
-            return aoi
 
     def calculate_index_with_mean(self, image, index_name, aoi):
         """Calculates the mean value for the specified index over the AOI."""
@@ -1441,14 +1401,55 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.df_aux = None
 
     def loadtimeseries_clicked(self):
-        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             self.resetting()
+            self.ee_process()
             self.plot_timeseries()
         except Exception as e:
             print(f"Error during timeseries loading: {e}")
+        finally:
+            QApplication.restoreOverrideCursor()
 
-        QApplication.restoreOverrideCursor()
+    def ee_process(self):
+
+        """Processes the Earth Engine data to create a DataFrame with the
+        time series data."""
+
+        orbit = self.QComboBox_orbit.currentText()
+        if orbit == "Descending":
+            orbit = False
+        else:
+            orbit = True
+
+        processor = S1ARDImageCollection(
+            geometry=self.aoi,
+            start_date=self.inicio,
+            stop_date=self.final,
+            polarization=self.QComboBox_polarization.currentText(),
+            apply_border_noise_correction=self.QCheckBox_apply_border_noise_correction.isChecked(),
+            apply_terrain_flattening=self.QCheckBox_apply_terrain_flattening.isChecked(),
+            apply_speckle_filtering=self.QCheckBox_apply_speckle_filtering.isChecked(),
+            output_format=self.QComboBox_output.currentText(),
+            ascending=orbit # False for descending orbit, True for ascending orbit
+            )
+        
+        # print("Processor parameters:")
+        # print(f"Geometry: {self.aoi}")
+        # print(f"Start date: {self.inicio}")
+        # print(f"Stop date: {self.final}")
+        # print(f"Polarization: {self.QComboBox_polarization.currentText()}")
+        # print(f"Apply border noise correction: {self.QCheckBox_apply_border_noise_correction.isChecked()}")
+        # print(f"Apply terrain flattening: {self.QCheckBox_apply_terrain_flattening.isChecked()}")
+        # print(f"Apply speckle filtering: {self.QCheckBox_apply_speckle_filtering.isChecked()}")
+        # print(f"Output format: {self.QComboBox_output.currentText()}")
+        # print(f"Ascending orbit: {orbit}")
+
+        collection = processor.get_collection()
+
+        size = collection.size().getInfo()
+        print(f"Number of images in collection: {size}")
+
 
     def df_ajust(self):
         """Adjusts the main DataFrame based on the selected dates."""

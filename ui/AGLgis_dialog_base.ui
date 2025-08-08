@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>AGLgis - Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine</string>
+   <string>AGLgis - Sentinel-1 SAR Backscatter Analysis Ready Data Preparation</string>
   </property>
   <property name="styleSheet">
    <string>
@@ -75,7 +75,7 @@
     <bool>false</bool>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>1</number>
    </property>
    <property name="usesScrollButtons">
     <bool>false</bool>
@@ -859,161 +859,6 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_9">
-    <attribute name="title">
-     <string>Step 7</string>
-    </attribute>
-    <widget class="QPushButton" name="QPushButton_back_6">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>290</y>
-       <width>101</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Back</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../medias/icons8-back-button-50.png</normaloff>../medias/icons8-back-button-50.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="QPushButton_next_6">
-     <property name="geometry">
-      <rect>
-       <x>650</x>
-       <y>290</y>
-       <width>101</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Next</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../medias/icons8-forward-button-50.png</normaloff>../medias/icons8-forward-button-50.png</iconset>
-     </property>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_28">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>741</width>
-       <height>271</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="title">
-      <string>AOI Buffer (meters):</string>
-     </property>
-     <widget class="QTextBrowser" name="textBrowser_11">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>80</y>
-        <width>721</width>
-        <height>181</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="html">
-       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This feature allows you to specify a buffer distance in meters to flexibly adjust the Area of Interest (AOI) by applying either a negative or a positive buffer:&lt;/p&gt;
-&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot;&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Negative Buffer:&lt;/span&gt; When a negative buffer is applied, the external edges of the AOI are trimmed, concentrating the analysis on the central region. This approach minimizes edge effects, such as noise or distortions, resulting in more precise and representative data from the core area.&lt;/li&gt;
-&lt;li style=&quot;&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Positive Buffer:&lt;/span&gt; When a positive buffer is applied, the AOI is expanded to include not only the central area but also the borders and an additional surrounding area. This expansion can be beneficial for capturing contextual information or ensuring that slight inaccuracies in the AOI boundary do not exclude relevant data.&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_buffer">
-      <property name="geometry">
-       <rect>
-        <x>690</x>
-        <y>40</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>0 m</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horizontalSlider_buffer">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>671</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="minimum">
-       <number>-300</number>
-      </property>
-      <property name="maximum">
-       <number>300</number>
-      </property>
-      <property name="singleStep">
-       <number>10</number>
-      </property>
-      <property name="pageStep">
-       <number>10</number>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="sliderPosition">
-       <number>0</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="invertedControls">
-       <bool>false</bool>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBothSides</enum>
-      </property>
-     </widget>
-    </widget>
-   </widget>
    <widget class="QWidget" name="tab_13">
     <attribute name="title">
      <string>Overview</string>
@@ -1024,7 +869,7 @@ p, li { white-space: pre-wrap; }
        <x>10</x>
        <y>10</y>
        <width>741</width>
-       <height>71</height>
+       <height>81</height>
       </rect>
      </property>
      <property name="font">
@@ -1116,82 +961,6 @@ p, li { white-space: pre-wrap; }
        <normaloff>../medias/icons8-reproduzir-50.png</normaloff>../medias/icons8-reproduzir-50.png</iconset>
      </property>
     </widget>
-    <widget class="QGroupBox" name="groupBox_30">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>250</y>
-       <width>521</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="title">
-      <string>AOI Buffer (meters)</string>
-     </property>
-     <widget class="QLabel" name="label_buffer_2">
-      <property name="geometry">
-       <rect>
-        <x>470</x>
-        <y>40</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>0m</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="horizontalSlider_buffer_2">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>451</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="minimum">
-       <number>-300</number>
-      </property>
-      <property name="maximum">
-       <number>300</number>
-      </property>
-      <property name="singleStep">
-       <number>10</number>
-      </property>
-      <property name="pageStep">
-       <number>10</number>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="sliderPosition">
-       <number>0</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBothSides</enum>
-      </property>
-     </widget>
-    </widget>
     <widget class="QPushButton" name="QPushButton_back_7">
      <property name="enabled">
       <bool>true</bool>
@@ -1221,9 +990,9 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>380</x>
-       <y>90</y>
-       <width>161</width>
-       <height>71</height>
+       <y>100</y>
+       <width>101</width>
+       <height>81</height>
       </rect>
      </property>
      <property name="font">
@@ -1234,12 +1003,12 @@ p, li { white-space: pre-wrap; }
      <property name="title">
       <string>Polatization</string>
      </property>
-     <widget class="QComboBox" name="polarization">
+     <widget class="QComboBox" name="QComboBox_polarization">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>141</width>
+        <width>81</width>
         <height>31</height>
        </rect>
       </property>
@@ -1253,15 +1022,25 @@ p, li { white-space: pre-wrap; }
         <string>VVVH</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>VV</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>VH</string>
+       </property>
+      </item>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_22">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>90</y>
-       <width>351</width>
-       <height>71</height>
+       <y>100</y>
+       <width>361</width>
+       <height>81</height>
       </rect>
      </property>
      <property name="font">
@@ -1275,7 +1054,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QDateEdit" name="finaledit_2">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>230</x>
         <y>30</y>
         <width>121</width>
         <height>31</height>
@@ -1321,7 +1100,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>60</x>
         <y>30</y>
-        <width>121</width>
+        <width>131</width>
         <height>31</height>
        </rect>
       </property>
@@ -1375,9 +1154,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>200</x>
         <y>35</y>
-        <width>41</width>
+        <width>31</width>
         <height>21</height>
        </rect>
       </property>
@@ -1395,9 +1174,9 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>170</y>
+       <y>190</y>
        <width>741</width>
-       <height>71</height>
+       <height>91</height>
       </rect>
      </property>
      <property name="font">
@@ -1408,11 +1187,11 @@ p, li { white-space: pre-wrap; }
      <property name="title">
       <string>Parameters</string>
      </property>
-     <widget class="QCheckBox" name="apply_border_noise_correction">
+     <widget class="QCheckBox" name="QCheckBox_apply_border_noise_correction">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>30</y>
+        <x>10</x>
+        <y>35</y>
         <width>291</width>
         <height>31</height>
        </rect>
@@ -1429,11 +1208,11 @@ p, li { white-space: pre-wrap; }
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="apply_terrain_flattening">
+     <widget class="QCheckBox" name="QCheckBox_apply_terrain_flattening">
       <property name="geometry">
        <rect>
-        <x>500</x>
-        <y>30</y>
+        <x>270</x>
+        <y>35</y>
         <width>191</width>
         <height>31</height>
        </rect>
@@ -1450,11 +1229,11 @@ p, li { white-space: pre-wrap; }
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QCheckBox" name="apply_speckle_filtering">
+     <widget class="QCheckBox" name="QCheckBox_apply_speckle_filtering">
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>30</y>
+        <x>539</x>
+        <y>36</y>
         <width>191</width>
         <height>31</height>
        </rect>
@@ -1472,13 +1251,13 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_24">
+    <widget class="QGroupBox" name="fda">
      <property name="geometry">
       <rect>
-       <x>560</x>
-       <y>90</y>
-       <width>191</width>
-       <height>71</height>
+       <x>490</x>
+       <y>100</y>
+       <width>121</width>
+       <height>81</height>
       </rect>
      </property>
      <property name="font">
@@ -1489,12 +1268,12 @@ p, li { white-space: pre-wrap; }
      <property name="title">
       <string>Output format</string>
      </property>
-     <widget class="QComboBox" name="polarization_2">
+     <widget class="QComboBox" name="QComboBox_output">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>171</width>
+        <width>101</width>
         <height>31</height>
        </rect>
       </property>
@@ -1505,12 +1284,55 @@ p, li { white-space: pre-wrap; }
       </property>
       <item>
        <property name="text">
-        <string>DB</string>
+        <string>LINEAR</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>LINEAR</string>
+        <string>DB</string>
+       </property>
+      </item>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_25">
+     <property name="geometry">
+      <rect>
+       <x>620</x>
+       <y>100</y>
+       <width>131</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="title">
+      <string>Orbit</string>
+     </property>
+     <widget class="QComboBox" name="QComboBox_orbit">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <item>
+       <property name="text">
+        <string>Descending</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Ascending</string>
        </property>
       </item>
      </widget>
