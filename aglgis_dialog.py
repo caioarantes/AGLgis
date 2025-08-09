@@ -255,14 +255,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.QTextBrowser.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
 
         self.project_QgsPasswordLineEdit.setEchoMode(QtWidgets.QLineEdit.EchoMode.Normal)
-
-        vegetation_index = [
-            "VV",
-            "VH",
-            
-        ]
-
-        self.imagem_unica_indice.addItems(vegetation_index)
         
         self.combo_year.addItems(
             [str(year) for year in range(2017, datetime.datetime.now().year + 1)]
@@ -287,8 +279,8 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.update_vector.clicked.connect(self.update_vector_clicked)
         self.update_vector_2.clicked.connect(self.update_vector_clicked)
         self.tabWidget.currentChanged.connect(self.on_tab_changed)
-        self.load_1index.clicked.connect(self.load_index)
-        self.load_1index_preview.clicked.connect(lambda: self.load_index(True))
+        self.load_1index.clicked.connect(self.load_image)
+        self.load_1index_preview.clicked.connect(lambda: self.load_image(True))
         self.hybrid.clicked.connect(map_tools.hybrid_function)
         self.QPushButton_next.clicked.connect(self.next_clicked)
         self.QPushButton_next_2.clicked.connect(self.next_clicked)
@@ -322,8 +314,56 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.finaledit.dateChanged.connect(self.reload_update)
 
 
-    def load_index(self, preview=False):
-        print("Loading index...")
+    def load_image(self, preview=False):
+
+        """Load Sentinel-1 image based on selected date."""
+    
+        print("Loading image...")
+        date = self.dataunica.currentText()
+        next_date = (datetime.datetime.strptime(date, "%Y-%m-%d") + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+        sellected_image = self.collection.filterDate(date, next_date).first().select(['VV', 'VH', 'VVVH_ratio']).clip(self.aoi)
+
+        # Prepare download URL for the clipped image
+
+        url = sellected_image.getDownloadURL(
+            {
+                "scale": 10,
+                "region": self.aoi.geometry().bounds().getInfo(),
+                "format": "GeoTIFF",
+                "crs": "EPSG:4326",
+            }
+        )
+        base_output_file = f"Sentinel1_{date}.tiff"
+        output_file = self.get_unique_filename(base_output_file, temporary=preview)
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(output_file, "wb") as f:
+                f.write(response.content)
+            print(f"Sentinel1 image downloaded as {output_file}")
+        else:
+            print(f"Failed to download image. HTTP Status: {response.status_code}")
+            return
+
+        layer_name = f"Sentinel1 {date}"
+        base_name = layer_name
+        i = 1
+        while QgsProject.instance().mapLayersByName(layer_name):
+            layer_name = f"{base_name}_{i}"
+            i += 1
+        print(f"Layer name adjusted to '{layer_name}' to ensure uniqueness.")
+
+        # Load the downloaded image as a raster layer
+
+        raster_layer = QgsRasterLayer(output_file, layer_name, "gdal")
+        if not raster_layer.isValid():
+            print(f"Failed to load raster layer from {output_file}")
+            return
+        
+        # Set the CRS to EPSG:4326
+        raster_layer.setCrs(QgsCoordinateReferenceSystem("EPSG:4326"))
+        QgsProject.instance().addMapLayer(raster_layer)
+        print(f"Raster layer '{layer_name}' added to the project.")
 
     def combobox_2_update(self):
         print("combobox_2_update called")
@@ -454,13 +494,9 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         """Handles the event when the save button is clicked."""
         """Manipula o evento quando o botão salvar é clicado."""
         df = self.df_aux
-        try:
-            df = df[["date", "AOI_average", "savitzky_golay_filtered", "image_id"]]
-        except:
-            df = df[["date", "AOI_average", "image_id"]]
 
         name = (
-            f"time_series.csv"
+            f"Sentinel1_time_series.csv"
         )
         save_utils.save(df, name, self)
 
@@ -486,13 +522,13 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.group_widgets = {}  # Store month group content widgets
 
         # Group Dates by Year and Month / Agrupa Datas por Ano e Mês
-        self.df["date"] = pd.to_datetime(
-            self.df["date"]
+        self.df["dates"] = pd.to_datetime(
+            self.df["dates"]
         )  # Ensure dates are datetime objects
-        grouped = self.df.groupby([self.df["date"].dt.year, self.df["date"].dt.month])
+        grouped = self.df.groupby([self.df["dates"].dt.year, self.df["dates"].dt.month])
 
         # Organize by Year / Organiza por Ano
-        years = self.df["date"].dt.year.unique()
+        years = self.df["dates"].dt.year.unique()
         for year in sorted(years):
             # Create a year-level widget / Cria um widget de nível de ano
             year_widget = QWidget(dialog)
@@ -506,7 +542,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
                 if self.recorte_datas is None
                 else all(
                     str(date.date()) in self.recorte_datas
-                    for date in self.df[self.df["date"].dt.year == year]["date"]
+                    for date in self.df[self.df["dates"].dt.year == year]["dates"]
                 )
             )
             year_checkbox.stateChanged.connect(
@@ -551,7 +587,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
                     True
                     if self.recorte_datas is None
                     else all(
-                        str(date.date()) in self.recorte_datas for date in group["date"]
+                        str(date.date()) in self.recorte_datas for date in group["dates"]
                     )
                 )
                 group_checkbox.stateChanged.connect(
@@ -564,7 +600,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
 
                 # Add individual checkboxes with further indentation / Adiciona
                 # checkboxes individuais com mais indentação
-                for date in group["date"]:
+                for date in group["dates"]:
                     date_str = str(date.date())
                     checkbox = QCheckBox(date_str, dialog)
                     checkbox.setChecked(
@@ -638,19 +674,16 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.df_ajust()
         self.plot_timeseries()
 
-        try:
-            self.df_ajust_features()
-            self.plot_timeseries_features()
-            print("Feature info updated and ploted).")
-        except:
-            pass
-
-        try:
-            self.df_ajust_points()
-            self.plot_timeseries_points()
-            print("Points info updated and ploted).")
-        except:
-            pass
+    def df_ajust(self):
+        """Adjusts the main DataFrame based on the selected dates."""
+        """Ajusta o DataFrame principal com base nas datas selecionadas."""
+        df = self.df.copy()
+        if self.recorte_datas:
+            # Ensure both sides are strings for comparison
+            df = df[df["dates"].astype(str).isin([str(d) for d in self.recorte_datas])]
+            self.df_aux = df.copy()
+        else:
+            self.df_aux = df.copy()
 
     def toggle_group_visibility(self, group_widget, toggle_button, group_label):
         """
@@ -927,7 +960,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             (self.tabWidget.currentIndex() - 1) % self.tabWidget.count()
         )
 
-
     def load_path_sugestion(self):
         """
         Load the path suggestion based on the user's operating system.
@@ -1023,7 +1055,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             self.aoi = None
             self.tabWidget.setCurrentIndex(2)
             
-            self.pop_warning("Nenhuma camada vetorial encontrada no projeto.")
+            self.pop_warning("No vector layers found in the project. Please add a polygon or multipolygon layer to continue.")
 
     def get_selected_layer_path(self):
         """
@@ -1079,14 +1111,14 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             # processamento
             self.aoi = self.load_vector_function()
             area = self.find_area()
-            if area > 100:
-                self.QPushButton_next.setEnabled(False)
-                self.QPushButton_skip.setEnabled(False)
-                self.loadtimeseries.setEnabled(False)
-                self.pop_warning("Área muito grande ({:.2f} km²). O limite é de 100 km².".format(area))
-                self.aio = None
-                #self.on_tab_changed(2)
-                return None
+            # if area > 100:
+            #     self.QPushButton_next.setEnabled(False)
+            #     self.QPushButton_skip.setEnabled(False)
+            #     self.loadtimeseries.setEnabled(False)
+            #     self.pop_warning("Area too large ({:.2f} km²). The limit is 100 km².".format(area))
+            #     self.aio = None
+            #     #self.on_tab_changed(2)
+            #     return None
 
             self.QPushButton_next.setEnabled(True)
             self.QPushButton_skip.setEnabled(True)
@@ -1098,16 +1130,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
                 f"Layer '{layer_name}' with ID '{layer_id}' not found in the project."
             )
             return None
-
-    def calculate_index_with_mean(self, image, index_name, aoi):
-        """Calculates the mean value for the specified index over the AOI."""
-        index_image = self.calculate_vegetation_index(image, index_name)
-        mean_index = (
-            index_image.reduceRegion(
-                reducer=ee.Reducer.mean(), geometry=aoi, scale=10, bestEffort=True
-            ).get("index")
-        )
-        return image.set({"mean_index": mean_index})
 
     def zoom_to_layer(self, layer_name, margin_ratio=0.3):
         """
@@ -1209,32 +1231,6 @@ class AGLgisDialog(QDialog, FORM_CLASS):
 
         print(f"Unique filename: {output_file}")
         return output_file
-
-    def sentinel2_selected_dates_update(self):
-        Date_list_selection = (
-            [
-                date.strftime("%Y-%m-%d")
-                for date in pd.to_datetime(self.df_aux["date"]).tolist()
-            ]
-            if "date" in self.df_aux.columns
-            else []
-        )
-        print(f"Selected dates for time series: {Date_list_selection}")
-
-        print("Final number of images before:", self.sentinel2.size().getInfo())
-        dates_in_collection = self.sentinel2.aggregate_array("date").getInfo()
-        print(f"Dates in the collection: {dates_in_collection}")
-        print(f"Selected dates (timestamps): {Date_list_selection}")
-
-        # Filtra a coleção Sentinel-2 pelas datas selecionadas
-        sentinel2_selected_dates = self.sentinel2.filter(
-            ee.Filter.inList("date", ee.List(Date_list_selection))
-        )
-        print(
-            "Final number of images after:", sentinel2_selected_dates.size().getInfo()
-        )
-
-        self.sentinel2_selected_dates = sentinel2_selected_dates
 
     def on_file_changed(self, file_path):
         """Slot called when the selected file changes."""
@@ -1398,14 +1394,19 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.aoi = self.load_vector_function()
         self.inicio = self.incioedit.date().toString("yyyy-MM-dd")
         self.final = self.finaledit.date().toString("yyyy-MM-dd")
+        self.df = None
+        self.collection = None
+        self.fig = None
         self.df_aux = None
 
     def loadtimeseries_clicked(self):
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         try:
-            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             self.resetting()
             self.ee_process()
+            self.load_dates()
             self.plot_timeseries()
+            self.next_clicked()
         except Exception as e:
             print(f"Error during timeseries loading: {e}")
         finally:
@@ -1446,23 +1447,112 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         # print(f"Ascending orbit: {orbit}")
 
         collection = processor.get_collection()
+        collection = collection.sort('system:time_start')
 
         size = collection.size().getInfo()
         print(f"Number of images in collection: {size}")
 
+        if size == 0:
+            self.pop_warning("No images found for the selected criteria.")
+            return
 
-    def df_ajust(self):
+        # self.pop_warning(f"Total number of images in the collection: {size}")
+
+
+        def add_vvvh_ratio_band(image):
+            ratio = image.select("VV").divide(image.select("VH")).rename("VVVH_ratio")
+            return image.addBands(ratio)
+
+        collection = collection.map(add_vvvh_ratio_band)
+
+        # Extract the VVVH_ratio band and reduce over the geometry to get mean values for each image
+        def get_vvvh_ratio_mean(image):
+            stats = image.select("VVVH_ratio").reduceRegion(
+                reducer=ee.Reducer.mean(),
+                geometry=self.aoi,
+                scale=10,
+                maxPixels=1e9
+            )
+            # Get image date
+            date = image.date().format('YYYY-MM-dd')
+            return ee.Feature(None, {
+                'date': date,
+                'VVVH_ratio_mean': stats.get('VVVH_ratio')
+            })
+
+        # Map over the collection to get time series
+        vvvh_ratio_ts = collection.map(get_vvvh_ratio_mean).getInfo()
+
+        # Convert to pandas DataFrame for easier handling
+
+        data = [
+            {'dates': f['properties']['date'], 'AOI_average': f['properties']['VVVH_ratio_mean']}
+            for f in vvvh_ratio_ts['features']
+        ]
+
+        df = pd.DataFrame(data)
+        self.df = df.copy()
+        self.df_aux = df.copy()
+
+        self.collection = collection
+
+    def df_adjust(self):
         """Adjusts the main DataFrame based on the selected dates."""
         """Ajusta o DataFrame principal com base nas datas selecionadas."""
         df = self.df.copy()
         if self.recorte_datas:
             # Ensure both sides are strings for comparison
-            df = df[df["date"].astype(str).isin([str(d) for d in self.recorte_datas])]
+            df = df[df["dates"].astype(str).isin([str(d) for d in self.recorte_datas])]
             self.df_aux = df.copy()
         else:
             self.df_aux = df.copy()
 
     def plot_timeseries(self):
+        """Plots the time series data using Plotly."""
+        self.config = {
+            "displaylogo": False,
+            "modeBarButtonsToRemove": [
+                "toImage",
+                "sendDataToCloud",
+                "zoom2d",
+                "pan2d",
+                "select2d",
+                "lasso2d",
+                "zoomIn2d",
+                "zoomOut2d",
+                "autoScale2d",
+                "resetScale2d",
+                "hoverClosestCartesian",
+                "hoverCompareCartesian",
+                "zoom3d",
+                "pan3d",
+                "orbitRotation",
+                "tableRotation",
+                "resetCameraLastSave",
+                "resetCameraDefault3d",
+                "hoverClosest3d",
+                "zoomInGeo",
+                "zoomOutGeo",
+                "resetGeo",
+                "hoverClosestGeo",
+                "hoverClosestGl2d",
+                "hoverClosestPie",
+                "toggleHover",
+                "toggleSpikelines",
+                "resetViews",
+            ],
+        }
+
+        df = self.df_aux.copy()
+
+        self.fig = px.line(df, x='dates', y='AOI_average', markers=True, title='VV/VH Ratio Mean Time Series')
+        self.fig.update_layout(xaxis_title='Date', yaxis_title='VV/VH Ratio Mean')
+
+
+        # Update layout and render the plot
+        self.QWebView.setHtml(
+            self.fig.to_html(include_plotlyjs="cdn", config=self.config)
+        )
         print("plot1 started")
 
     def open_browser(self):
@@ -1475,7 +1565,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         combobox."""
         """Carrega as datas exclusivas do DataFrame na combobox de seleção de
         data."""
-        datas = self.df.date.unique().astype(str).tolist()
+        datas = self.df.dates.unique().astype(str).tolist()
         self.dataunica.clear()
         self.dataunica.addItems(datas)
         self.dataunica.setCurrentIndex(self.dataunica.count() - 1)
