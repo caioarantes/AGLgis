@@ -448,6 +448,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.loadtimeseries.clicked.connect(self.loadtimeseries_clicked)
         self.datasrecorte.clicked.connect(self.datasrecorte_clicked)
         self.salvar.clicked.connect(self.salvar_clicked)
+        self.QTextBrowser.anchorClicked.connect(self.open_link)
         
         # UI interaction signals
         self.navegador.clicked.connect(self.open_browser)
