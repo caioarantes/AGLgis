@@ -499,8 +499,14 @@ class AGLgisDialog(QDialog, FORM_CLASS):
                          .select(['VV', 'VH', 'VVVH_ratio'])
                          .clip(self.aoi))
 
+        mask = ee.Image(1).clip(self.aoi).mask()
+
+        # 2. Apply this mask to the final composite image.
+        # This operation sets pixels outside the mask to NoData (transparent).
+        final_image_masked = selected_image.updateMask(mask)
+
         # Prepare download URL for the clipped image
-        url = selected_image.getDownloadURL({
+        url = final_image_masked.getDownloadURL({
             "scale": 10,
             "region": self.aoi.geometry().bounds().getInfo(),
             "format": "GeoTIFF",
@@ -1670,6 +1676,8 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             QApplication.restoreOverrideCursor()
 
     def ee_process(self):
+
+        #self.cheching()
         """
         Process Earth Engine data to create a time series collection.
         
@@ -1680,9 +1688,10 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             ee.ImageCollection: Processed Sentinel-1 image collection with time series data
         """
         # Determine orbit direction from user selection
-        orbit = self.QComboBox_orbit.currentText() != "Descending"
+        orbit = self.QComboBox_orbit.currentText() != "DESCENDING"
 
         # Configure the S1ARD processor with user parameters
+
         processor = S1ARDImageCollection(
             geometry=self.aoi,
             start_date=self.inicio,
@@ -1692,9 +1701,18 @@ class AGLgisDialog(QDialog, FORM_CLASS):
             apply_terrain_flattening=self.QCheckBox_apply_terrain_flattening.isChecked(),
             apply_speckle_filtering=self.QCheckBox_apply_speckle_filtering.isChecked(),
             output_format=self.QComboBox_output.currentText(),
-            ascending=orbit
+            ascending=orbit  # False for descending orbit, True for ascending orbit
         )
-        
+        # print("AOI:", self.aoi.getInfo())
+        # print("start date:", self.inicio)
+        # print("end date:", self.final)
+        # print("Polarization:", self.QComboBox_polarization.currentText())
+        # print("Orbit ascending:", orbit)
+        # print("Border noise correction:", self.QCheckBox_apply_border_noise_correction.isChecked())
+        # print("Terrain flattening:", self.QCheckBox_apply_terrain_flattening.isChecked())
+        # print("Speckle filtering:", self.QCheckBox_apply_speckle_filtering.isChecked())
+        # print("Output format:", self.QComboBox_output.currentText())
+
         collection = processor.get_collection().sort('system:time_start')
 
         size = collection.size().getInfo()
@@ -1743,7 +1761,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
 
         # Create and store DataFrames
         df = pd.DataFrame(data)
-        print(df)
+        #print(df)
         self.df = df.copy()
         self.df_aux = df.copy()
 

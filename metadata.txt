@@ -10,7 +10,7 @@ version=0.1
 author=Caio Arantes
 email=caiosimplicioarantes@gmail.com
 
-about=GLgis is a graphical interface designed to simplify the use of the Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine package in QGIS.  
+about=This plugin allows users to configure and run Sentinel-1 SAR data processing without the need to write code.
 
 tracker=https://github.com/caioarantes/aglgis
 repository=https://github.com/caioarantes/aglgis

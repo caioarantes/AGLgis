@@ -75,7 +75,7 @@
     <bool>false</bool>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <property name="usesScrollButtons">
     <bool>false</bool>
@@ -989,7 +989,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QGroupBox" name="groupBox_21">
      <property name="geometry">
       <rect>
-       <x>380</x>
+       <x>360</x>
        <y>100</y>
        <width>101</width>
        <height>81</height>
@@ -1039,7 +1039,7 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>10</x>
        <y>100</y>
-       <width>361</width>
+       <width>341</width>
        <height>81</height>
       </rect>
      </property>
@@ -1054,9 +1054,9 @@ p, li { white-space: pre-wrap; }
      <widget class="QDateEdit" name="finaledit_2">
       <property name="geometry">
        <rect>
-        <x>230</x>
+        <x>220</x>
         <y>30</y>
-        <width>121</width>
+        <width>111</width>
         <height>31</height>
        </rect>
       </property>
@@ -1100,7 +1100,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>60</x>
         <y>30</y>
-        <width>131</width>
+        <width>121</width>
         <height>31</height>
        </rect>
       </property>
@@ -1154,7 +1154,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>190</x>
         <y>35</y>
         <width>31</width>
         <height>21</height>
@@ -1254,7 +1254,7 @@ p, li { white-space: pre-wrap; }
     <widget class="QGroupBox" name="fda">
      <property name="geometry">
       <rect>
-       <x>490</x>
+       <x>470</x>
        <y>100</y>
        <width>121</width>
        <height>81</height>
@@ -1284,12 +1284,12 @@ p, li { white-space: pre-wrap; }
       </property>
       <item>
        <property name="text">
-        <string>LINEAR</string>
+        <string>DB</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>DB</string>
+        <string>LINEAR</string>
        </property>
       </item>
      </widget>
@@ -1297,9 +1297,9 @@ p, li { white-space: pre-wrap; }
     <widget class="QGroupBox" name="groupBox_25">
      <property name="geometry">
       <rect>
-       <x>620</x>
+       <x>600</x>
        <y>100</y>
-       <width>131</width>
+       <width>151</width>
        <height>81</height>
       </rect>
      </property>
@@ -1316,7 +1316,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>111</width>
+        <width>131</width>
         <height>31</height>
        </rect>
       </property>
@@ -1327,12 +1327,12 @@ p, li { white-space: pre-wrap; }
       </property>
       <item>
        <property name="text">
-        <string>Descending</string>
+        <string>DESCENDING</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Ascending</string>
+        <string>ASCENDING</string>
        </property>
       </item>
      </widget>
