@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AGLgis Plugin Documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; color: #222; }
+        h1, h2, h3 { color: #2a5d84; }
+        table { border-collapse: collapse; width: 100%; margin-top: 1em; background: #fff; }
+        th, td { border: 1px solid #ccc; padding: 0.5em 1em; text-align: left; }
+        th { background: #e6f2fa; }
+        a { color: #1a73e8; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 2em; box-shadow: 0 2px 8px rgba(0,0,0,0.05);}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AGLgis</h1>
+        <p>
+            AGLgis is a graphical interface designed to simplify the use of the
+            <a href="https://pypi.org/project/ee-s1-ard/" target="_blank">
+                Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine
+            </a>
+            package in QGIS.
+        </p>
+        <p>
+            This plugin allows users to configure and run Sentinel-1 SAR data processing without the need to write code.
+        </p>
+
+        <h2>Main features</h2>
+        <ul>
+            <li>Graphical interface for selecting area, dates, and processing parameters.</li>
+            <li>Direct integration with the <code>ee-s1-ard</code> package, making the workflow more accessible.</li>
+            <li>Support for border noise correction, terrain flattening, and speckle filtering.</li>
+            <li>Export of results ready for analysis and visualization.</li>
+        </ul>
+
+        <h2>Supported Parameters</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>geometry</td>
+                    <td>ee.Geometry</td>
+                    <td>Area of interest</td>
+                    <td>Required</td>
+                </tr>
+                <tr>
+                    <td>start_date</td>
+                    <td>str</td>
+                    <td>Start date (YYYY-MM-DD)</td>
+                    <td>Required</td>
+                </tr>
+                <tr>
+                    <td>stop_date</td>
+                    <td>str</td>
+                    <td>End date (YYYY-MM-DD)</td>
+                    <td>Required</td>
+                </tr>
+                <tr>
+                    <td>polarization</td>
+                    <td>str</td>
+                    <td>Polarization (VV, VH, VVVH)</td>
+                    <td>VVVH</td>
+                </tr>
+                <tr>
+                    <td>apply_border_noise_correction</td>
+                    <td>bool</td>
+                    <td>Apply border noise correction</td>
+                    <td>True</td>
+                </tr>
+                <tr>
+                    <td>apply_terrain_flattening</td>
+                    <td>bool</td>
+                    <td>Apply terrain flattening</td>
+                    <td>True</td>
+                </tr>
+                <tr>
+                    <td>apply_speckle_filtering</td>
+                    <td>bool</td>
+                    <td>Apply speckle filtering</td>
+                    <td>True</td>
+                </tr>
+                <tr>
+                    <td>output_format</td>
+                    <td>str</td>
+                    <td>Output format (LINEAR, DB)</td>
+                    <td>DB</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
