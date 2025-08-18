@@ -6,9 +6,9 @@
 
 [general]
 name=AGLgis
-qgisMinimumVersion=3.16
+qgisMinimumVersion=3.0
 description=AGLgis is a graphical interface designed to simplify the use of the Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine package in QGIS.  
-version=0.1
+version=1.0
 author=Caio Arantes
 email=caiosimplicioarantes@gmail.com
 
@@ -23,6 +23,9 @@ repository=https://github.com/caioarantes/aglgis
 hasProcessingProvider=no
 # Uncomment the following line and add your changelog:
 changelog=
+    1.0 - Updated documentation
+    - Batch download feature
+
     0.1 - Initial release
     - Graphical interface for Sentinel-1 SAR data processing
     - Integration with Google Earth Engine
