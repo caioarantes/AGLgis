@@ -433,6 +433,7 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         # Image loading signals
         self.load_1index.clicked.connect(self.load_image)
         self.load_1index_preview.clicked.connect(lambda: self.load_image(True))
+        self.load_batch.clicked.connect(self.load_batch_clicked)
         
         # Navigation button signals
         self.QPushButton_next.clicked.connect(self.next_clicked)
@@ -469,9 +470,21 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.incioedit.dateChanged.connect(self.reload_update)
         self.finaledit.dateChanged.connect(self.reload_update)
 
+
+    def load_batch_clicked (self):
+
+        length = self.dataunica.count()
+        print(f"Number of dates in the collection: {length}")
+        for i in range(length):
+            self.dataunica.setCurrentIndex(i)
+            print(f"Loading image for date: {self.dataunica.currentText()}")
+            self.load_image(preview=False)  # Load each image in download mode
+
+
     # =========================================================================
     # IMAGE LOADING AND PROCESSING
     # =========================================================================
+
 
     def load_image(self, preview=False):
         """
