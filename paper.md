@@ -1,6 +1,6 @@
 
 ---
-title: "AGLgis: A QGIS Plugin for Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine"
+title: "AGLgis: A QGIS Plugin for Accessing and Visualizing Processed Sentinel-1 SAR Data"
 authors:
   - name: Caio Simplicio Arantes
     orcid: 0009-0006-6926-9368
@@ -29,11 +29,11 @@ keywords:
 
 # Summary
 
-AGLgis is an open-source QGIS plugin designed to simplify the preparation and analysis of Sentinel-1 Synthetic Aperture Radar (SAR) Backscatter data using Google Earth Engine (GEE). The plugin provides a graphical interface for configuring and running the [ee-s1-ard](https://pypi.org/project/ee-s1-ard/) package, enabling users to process SAR data without writing code. Key features include area selection, date range configuration, border noise correction, terrain flattening, speckle filtering, and export of analysis-ready results. AGLgis aims to make advanced SAR data workflows accessible to a broader geospatial community, supporting research and operational applications in remote sensing.
+AGLgis is an open-source QGIS plugin [@qgis] designed to simplify the preparation and analysis of Sentinel-1 Synthetic Aperture Radar (SAR) Backscatter data [@sentinel1] using Google Earth Engine (GEE) [@earthengine]. The plugin provides a graphical interface for configuring and running the [ee-s1-ard](https://pypi.org/project/ee-s1-ard/) package [@ees1ard], which implements the data processing workflow described by Mullissa et al. (2021) [@mullissa2021], enabling users to process SAR data without writing code. Key features include area selection, date range configuration, border noise correction, terrain flattening, speckle filtering, and export of analysis-ready results. AGLgis aims to make advanced SAR data workflows accessible to a broader geospatial community, supporting research and operational applications in remote sensing.
 
 # Statement of Need
 
-Sentinel-1 SAR data is widely used in earth observation for applications such as land cover mapping, flood monitoring, and agricultural analysis. However, preparing analysis-ready SAR data typically requires complex processing steps and programming expertise. AGLgis addresses this gap by integrating the [ee-s1-ard] package into QGIS, providing a user-friendly interface for non-programmers and researchers to access advanced SAR processing capabilities. The plugin streamlines workflows, reduces barriers to entry, and promotes reproducible research in geospatial science.
+Sentinel-1 SAR data [@sentinel1] is widely used in earth observation for applications such as land cover mapping, flood monitoring, and agricultural analysis. However, preparing analysis-ready SAR data typically requires complex processing steps and programming expertise. AGLgis addresses this gap by integrating the [ee-s1-ard] package [@ees1ard] into QGIS [@qgis], providing a user-friendly interface for non-programmers and researchers to access advanced SAR processing capabilities. The plugin streamlines workflows, reduces barriers to entry, and promotes reproducible research in geospatial science [@earthengine].
 
 # Features
 
@@ -44,7 +44,7 @@ Sentinel-1 SAR data is widely used in earth observation for applications such as
 
 # Implementation
 
-AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface. The plugin communicates with Google Earth Engine via the [ee-s1-ard] package, handling authentication, data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage.
+AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@qgis]. The plugin communicates with Google Earth Engine [@earthengine] via the [ee-s1-ard] package [@ees1ard], handling authentication, data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage [@aglplugin].
 
 # Availability
 
@@ -57,3 +57,4 @@ AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user
 We thank the QGIS and Google Earth Engine communities for their support and open-source contributions.
 
 # References
+
