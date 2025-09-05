@@ -7,10 +7,9 @@ authors:
   - name: Mateus Pinto da Silva
     orcid: 0000-0001-8940-2716
     affiliation: 2
-affiliations:
-  - name: Universidade Estadual de Campinas (UNICAMP)
-    index: 1
-  - name: Universidade Federal de Viçosa (UFV)
+aff  - name: State University of Campinas (UNICAMP)as (UNICAMP)
+  - name: Federal University of Viçosa (UFV)
+    index 2V)
     index: 2
 repository: https://github.com/caioarantes/AGLgis
 archive: https://zenodo.org/record/1234567
@@ -57,4 +56,4 @@ AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user
 
 We thank the QGIS and Google Earth Engine communities for their support and open-source contributions.
 
-# References
+# Reference
