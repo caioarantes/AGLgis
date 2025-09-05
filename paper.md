@@ -42,19 +42,7 @@ Sentinel-1 SAR data [@sentinel1] is widely used in earth observation for applica
 - Support for border noise correction, terrain flattening, and speckle filtering
 - Export of results in analysis-ready formats
 
-The user can select all main processing parameters directly through the plugin's graphical user interface (GUI), making configuration simple and accessible. The supported parameters are:
-
-| Parameter                     | Type         | Description                                         | Default      |
-|-------------------------------|--------------|-----------------------------------------------------|--------------|
-| geometry                      | ee.Geometry  | Area of interest                                    | Required     |
-| start_date                    | str          | Start date (YYYY-MM-DD)                             | Required     |
-| stop_date                     | str          | End date (YYYY-MM-DD)                               | Required     |
-| polarization                  | str          | Polarization (VV, VH, VVVH)                         | VVVH         |
-| apply_border_noise_correction | bool         | Apply border noise correction                       | True         |
-| apply_terrain_flattening      | bool         | Apply terrain flattening                            | True         |
-| apply_speckle_filtering       | bool         | Apply speckle filtering                             | True         |
-| output_format                 | str          | Output format (LINEAR, DB)                          | DB           |
-
+The user can select all main processing parameters directly through the plugin's graphical user interface (GUI), making configuration simple and accessible. The supported parameters include geometry (area of interest), temporal range (start and stop dates), polarization options (VV, VH, or VVVH), and processing flags for border noise correction, terrain flattening, and speckle filtering. All parameters have sensible defaults, with VVVH polarization and all correction options enabled by default.
 
 # Implementation
 
@@ -71,4 +59,3 @@ AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user
 We thank the QGIS and Google Earth Engine communities for their support and open-source contributions.
 
 # References
-
