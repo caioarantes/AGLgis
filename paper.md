@@ -7,22 +7,13 @@ authors:
   - name: Mateus Pinto da Silva
     orcid: 0000-0001-8940-2716
     affiliation: 2
-aff  - name: State University of Campinas (UNICAMP)as (UNICAMP)
+affiliations:
+  - name: State University of Campinas (UNICAMP)as (UNICAMP)
+    index: 1
   - name: Federal University of Viçosa (UFV)
-    index 2V)
     index: 2
-repository: https://github.com/caioarantes/AGLgis
-archive: https://zenodo.org/record/1234567
-keywords:
-  - QGIS
-  - Google Earth Engine
-  - Sentinel-1
-  - SAR
-  - Remote Sensing
-  - Geospatial
-  - Plugin
-  - Data Preparation
-  - Open Source
+date: 2025-09-05
+bibliography: paper.bib
 ---
 
 # Summary
