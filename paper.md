@@ -1,14 +1,3 @@
-    - name: Caio Simplicio Arantes
-      orcid: 0009-0006-6926-9368
-      affiliation: 1
-    - name: Mateus Pinto da Silva
-      orcid: 0000-0001-8940-2716
-      affiliation: 2
-    - name: Universidade Estadual de Campinas (UNICAMP)
-      index: 1
-    - name: Universidade Federal de Viçosa (UFV)
-      index: 2
----
 title: "AGLgis: A QGIS Plugin for Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine"
 authors:
   - name: Caio Simplicio Arantes
@@ -33,7 +22,6 @@ keywords:
   - Geospatial
   - Plugin
   - Data Preparation
-  - Open Source
 ---
 
 # Summary
@@ -50,12 +38,10 @@ Sentinel-1 SAR data is widely used in earth observation for applications such as
 - Direct integration with Google Earth Engine and the [ee-s1-ard] package
 - Support for border noise correction, terrain flattening, and speckle filtering
 - Export of results in analysis-ready formats
-- Project-based authentication for Google Cloud
-- Compatible with QGIS and cross-platform
 
 # Implementation
 
-AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface. The plugin communicates with Google Earth Engine via the [ee-s1-ard] package, handling authentication, data selection, and processing. The code is open source and available on GitHub. Users can install the plugin in QGIS and follow the documentation for setup and usage.
+AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface. The plugin communicates with Google Earth Engine via the [ee-s1-ard] package, handling authentication, data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage.
 
 # Availability
 
@@ -65,8 +51,6 @@ AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user
 
 # Acknowledgements
 
-We thank the QGIS and Google Earth Engine communities for their support and open-source contributions. This work was supported by UNICAMP and UFV.
+We thank the QGIS and Google Earth Engine communities for their support and open-source contributions.
 
 # References
-
-See `paper.bib` for full references.
