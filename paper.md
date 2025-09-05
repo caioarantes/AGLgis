@@ -22,7 +22,7 @@ keywords:
   - Geospatial
   - Plugin
   - Data Preparation
----
+  - Open Source
 
 # Summary
 
