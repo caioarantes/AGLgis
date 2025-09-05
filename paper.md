@@ -1,4 +1,3 @@
-
 ---
 title: "AGLgis: A QGIS Plugin for Accessing and Visualizing Processed Sentinel-1 SAR Data"
 authors:
