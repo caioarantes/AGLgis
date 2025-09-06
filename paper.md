@@ -8,7 +8,7 @@ authors:
     orcid: 0000-0001-8940-2716
     affiliation: 2
 affiliations:
-  - name: State University of Campinas (UNICAMP)as (UNICAMP)
+  - name: State University of Campinas (UNICAMP)
     index: 1
   - name: Federal University of Viçosa (UFV)
     index: 2
@@ -26,14 +26,16 @@ Sentinel-1 SAR data [@sentinel1] is widely used in earth observation for applica
 
 # Features
 
-- Graphical interface for area, date, and parameter selection
-- Direct integration with Google Earth Engine and the [ee-s1-ard] package
-- Support for border noise correction, terrain flattening, and speckle filtering
-- VV/VH time series visualization within QGIS
-- RGB view and download of VV, VH, and VV/VH bands for selected dates directly in QGIS
-- Export of results in analysis-ready formats
+AGLgis offers a user-friendly graphical interface for configuring and running Sentinel-1 SAR data processing workflows in QGIS. Key capabilities include:
 
-The user can select all main processing parameters directly through the plugin's graphical user interface (GUI), making configuration simple and accessible. The supported parameters include geometry (area of interest), temporal range (start and stop dates), polarization options (VV, VH, or VVVH), and processing flags for border noise correction, terrain flattening, and speckle filtering. All parameters have sensible defaults, with VVVH polarization and all correction options enabled by default.
+- Area of interest and date range selection
+- Integration with Google Earth Engine and the [ee-s1-ard] package
+- Automated border noise correction, terrain flattening, and speckle filtering
+- Interactive visualization of VV/VH time series and RGB composites within QGIS
+- Direct download of processed bands for selected dates
+- Batch download of multiple processed scenes
+
+All major processing parameters—geometry, temporal range, polarization (VV, VH, or VVVH), and correction options—are accessible via the plugin’s GUI. Sensible defaults (VVVH polarization and all corrections enabled) help users quickly obtain analysis-ready SAR data.
 
 # Implementation
 
@@ -42,7 +44,7 @@ AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user
 # Availability
 
 - Source code: https://github.com/caioarantes/AGLgis
-- Documentation: See `index.html` in the repository and online at [GitHub Pages](https://caioarantes.github.io/AGLgis/)
+- Documentation: Online at [GitHub Pages](https://caioarantes.github.io/AGLgis/)
 - License: GNU General Public License v2 or later
 
 # Acknowledgements
