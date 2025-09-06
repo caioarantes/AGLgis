@@ -29,13 +29,15 @@ Sentinel-1 SAR data [@sentinel1] is widely used in earth observation for applica
 - Graphical interface for area, date, and parameter selection
 - Direct integration with Google Earth Engine and the [ee-s1-ard] package
 - Support for border noise correction, terrain flattening, and speckle filtering
+- VV/VH time series visualization within QGIS
+- RGB view and download of VV, VH, and VV/VH bands for selected dates directly in QGIS
 - Export of results in analysis-ready formats
 
 The user can select all main processing parameters directly through the plugin's graphical user interface (GUI), making configuration simple and accessible. The supported parameters include geometry (area of interest), temporal range (start and stop dates), polarization options (VV, VH, or VVVH), and processing flags for border noise correction, terrain flattening, and speckle filtering. All parameters have sensible defaults, with VVVH polarization and all correction options enabled by default.
 
 # Implementation
 
-AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@qgis]. The plugin communicates with Google Earth Engine [@earthengine] via the [ee-s1-ard] package [@ees1ard], handling authentication, data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage [@aglplugin].
+AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@qgis]. The plugin communicates with Google Earth Engine [@earthengine] via the [ee-s1-ard] package [@ees1ard], handling authentication, data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage.
 
 # Availability
 
