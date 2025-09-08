@@ -39,11 +39,11 @@ All major processing parameters—geometry, temporal range, polarization (VV, VH
 
 # Implementation
 
-AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@qgis]. The plugin communicates with Google Earth Engine [@earthengine] via the [ee-s1-ard] package [@ees1ard], handling authentication, data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage.
+AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@pyqt]. The plugin communicates with Google Earth Engine [@earthengine] via the [ee-s1-ard] package [@ees1ard], handling authentication, data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage.
 
 # Availability
 
-- Source code: https://github.com/caioarantes/AGLgis
+- Source code: [https://github.com/caioarantes/AGLgis](https://github.com/caioarantes/AGLgis)
 - Documentation: Online at [GitHub Pages](https://caioarantes.github.io/AGLgis/)
 - License: GNU General Public License v2 or later
 
