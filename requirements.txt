@@ -1,1 +1,1 @@
-ee-s1-ard>=1.0.5
+agrigee_lite>=2.0.5
