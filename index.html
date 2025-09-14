@@ -4,107 +4,140 @@
     <meta charset="UTF-8">
     <title>AGLgis Plugin Documentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; color: #222; }
-        h1, h2, h3 { color: #2a5d84; }
-        table { border-collapse: collapse; width: 100%; margin-top: 1em; background: #fff; }
-        th, td { border: 1px solid #ccc; padding: 0.5em 1em; text-align: left; }
-        th { background: #e6f2fa; }
-        a { color: #1a73e8; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .container { max-width: 900px; margin: auto; background: #fff; padding: 2em; box-shadow: 0 2px 8px rgba(0,0,0,0.05);}
-    </style>
+        <style>
+                body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; color: #222; }
+                h1, h2, h3 { color: #2a5d84; }
+                table { border-collapse: collapse; width: 100%; margin-top: 1em; background: #fff; }
+                th, td { border: 1px solid #ccc; padding: 0.5em 1em; text-align: left; }
+                th { background: #e6f2fa; }
+                a { color: #1a73e8; text-decoration: none; }
+                a:hover { text-decoration: underline; }
+                .container { max-width: 900px; margin: auto; background: #fff; padding: 2em; box-shadow: 0 2px 8px rgba(0,0,0,0.05);}
+                .lang-btns { text-align: center; margin-bottom: 2em; }
+                .lang-btns button { margin: 0 8px; padding: 8px 18px; font-size: 1em; border-radius: 6px; border: 1px solid #2a5d84; background: #e6f2fa; color: #2a5d84; cursor: pointer; }
+                .lang-btns button.active { background: #2a5d84; color: #fff; }
+                .hidden { display: none; }
+        </style>
+        <script>
+            function showLang(lang) {
+                document.getElementById('pt').classList.add('hidden');
+                document.getElementById('en').classList.add('hidden');
+                document.getElementById(lang).classList.remove('hidden');
+                document.getElementById('btn-pt').classList.remove('active');
+                document.getElementById('btn-en').classList.remove('active');
+                document.getElementById('btn-' + lang).classList.add('active');
+            }
+            window.onload = function() {
+                var lang = 'pt';
+                var navLang = navigator.language || navigator.userLanguage;
+                if (navLang) {
+                    if (navLang.startsWith('en')) lang = 'en';
+                    else if (navLang.startsWith('pt')) lang = 'pt';
+                }
+                showLang(lang);
+            };
+        </script>
 </head>
 <body>
-    <div class="container">
-        <h1>AGLgis</h1>
-        <p>
-            AGLgis is a graphical interface designed to simplify the use of the
-            <a href="https://pypi.org/project/ee-s1-ard/" target="_blank">
-                Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine
-            </a>
-            package in QGIS.
-        </p>
-        <p>
-            This plugin allows users to configure and run Sentinel-1 SAR data processing without the need to write code.
-        </p>
-
-        <h2>Main features</h2>
-        <ul>
-            <li>Graphical interface for selecting area, dates, and processing parameters.</li>
-            <li>Direct integration with the <code>ee-s1-ard</code> package, making the workflow more accessible.</li>
-            <li>Support for border noise correction, terrain flattening, and speckle filtering.</li>
-            <li>Export of results ready for analysis and visualization.</li>
-        </ul>
-
-        <h2>Supported Parameters</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Type</th>
-                    <th>Description</th>
-                    <th>Default</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>geometry</td>
-                    <td>ee.Geometry</td>
-                    <td>Area of interest</td>
-                    <td>Required</td>
-                </tr>
-                <tr>
-                    <td>start_date</td>
-                    <td>str</td>
-                    <td>Start date (YYYY-MM-DD)</td>
-                    <td>Required</td>
-                </tr>
-                <tr>
-                    <td>stop_date</td>
-                    <td>str</td>
-                    <td>End date (YYYY-MM-DD)</td>
-                    <td>Required</td>
-                </tr>
-                <tr>
-                    <td>polarization</td>
-                    <td>str</td>
-                    <td>Polarization (VV, VH, VVVH)</td>
-                    <td>VVVH</td>
-                </tr>
-                <tr>
-                    <td>apply_border_noise_correction</td>
-                    <td>bool</td>
-                    <td>Apply border noise correction</td>
-                    <td>True</td>
-                </tr>
-                <tr>
-                    <td>apply_terrain_flattening</td>
-                    <td>bool</td>
-                    <td>Apply terrain flattening</td>
-                    <td>True</td>
-                </tr>
-                <tr>
-                    <td>apply_speckle_filtering</td>
-                    <td>bool</td>
-                    <td>Apply speckle filtering</td>
-                    <td>True</td>
-                </tr>
-                <tr>
-                    <td>output_format</td>
-                    <td>str</td>
-                    <td>Output format (LINEAR, DB)</td>
-                    <td>DB</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Google Cloud Project Setup</h2>
-        <img src="medias/image01.png" alt="Google Cloud Project ID Example" style="max-width:100%;border:1px solid #ccc;margin-bottom:1em;">
-        <p>
-            The image above shows where to find your Google Cloud Project ID, which is required for authenticating and running the <code>ee-s1-ard</code> package in Google Earth Engine. 
-            Make sure you have a valid project set up in the <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> and use the Project ID when configuring the plugin.
-        </p>
-    </div>
+        <div class="lang-btns">
+            <button id="btn-pt" onclick="showLang('pt')">Português</button>
+            <button id="btn-en" onclick="showLang('en')">English</button>
+        </div>
+        <div id="pt" class="container">
+            <h1>AGLgis (Português)</h1>
+            <p>
+                O AGLgis é uma interface gráfica para facilitar o uso do pacote <a href="https://pypi.org/project/ee-s1-ard/" target="_blank">Sentinel-1 SAR Backscatter Analysis Ready Data Preparation no Google Earth Engine</a> no QGIS.
+            </p>
+            <p>
+                Este plugin permite configurar e executar o processamento de dados SAR Sentinel-1 sem necessidade de programação.
+            </p>
+            <h2>Principais funcionalidades</h2>
+            <ul>
+                <li>Interface gráfica para seleção de área, datas e parâmetros de processamento.</li>
+                <li>Integração direta com o pacote <a href="https://www.piwheels.org/project/ee-s1-ard/" target="_blank"><code>ee-s1-ard</code></a>, tornando o fluxo mais acessível.</li>
+                <li>Suporte à correção de ruído de borda, nivelamento de terreno e filtragem de speckle.</li>
+                <li>Exportação dos resultados prontos para análise e visualização.</li>
+            </ul>
+            <h2>Parâmetros suportados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parâmetro</th>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                        <th>Padrão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>geometry</td><td>ee.Geometry</td><td>Área de interesse</td><td>Obrigatório</td></tr>
+                    <tr><td>start_date</td><td>str</td><td>Data inicial (AAAA-MM-DD)</td><td>Obrigatório</td></tr>
+                    <tr><td>stop_date</td><td>str</td><td>Data final (AAAA-MM-DD)</td><td>Obrigatório</td></tr>
+                    <tr><td>polarization</td><td>str</td><td>Polarização (VV, VH, VVVH)</td><td>VVVH</td></tr>
+                    <tr><td>apply_border_noise_correction</td><td>bool</td><td>Aplicar correção de ruído de borda</td><td>True</td></tr>
+                    <tr><td>apply_terrain_flattening</td><td>bool</td><td>Aplicar nivelamento de terreno</td><td>True</td></tr>
+                    <tr><td>apply_speckle_filtering</td><td>bool</td><td>Aplicar filtragem de speckle</td><td>True</td></tr>
+                    <tr><td>output_format</td><td>str</td><td>Formato de saída (LINEAR, DB)</td><td>DB</td></tr>
+                </tbody>
+            </table>
+            <h2>Exemplo de Série Temporal e Imagem Selecionada</h2>
+            <img src="medias/demo.png" alt="Demonstração da série temporal e imagem da data selecionada" style="max-width:100%;border:1px solid #ccc;margin-bottom:1em;">
+            <p>
+                Acima, uma demonstração da série temporal gerada pelo plugin e uma imagem SAR da data selecionada.
+                    <p>
+                        O AGLgis é uma interface gráfica para facilitar o uso do pacote <a href="https://www.piwheels.org/project/ee-s1-ard/" target="_blank">ee-s1-ard</a> (Sentinel-1 SAR Backscatter Analysis Ready Data Preparation no Google Earth Engine) no QGIS.
+                    </p>
+            <p>
+            A imagem acima mostra onde encontrar o ID do seu Projeto Google Cloud, necessário para autenticar e executar o pacote <a href="https://www.piwheels.org/project/ee-s1-ard/" target="_blank"><code>ee-s1-ard</code></a> no Google Earth Engine.
+                Certifique-se de ter um projeto válido no <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> e utilize o ID ao configurar o plugin.
+            </p>
+        </div>
+        <div id="en" class="container hidden">
+            <h1>AGLgis (English)</h1>
+            <p>
+                AGLgis is a graphical interface designed to simplify the use of the <a href="https://pypi.org/project/ee-s1-ard/" target="_blank">Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine</a> package in QGIS.
+            </p>
+            <p>
+                This plugin allows users to configure and run Sentinel-1 SAR data processing without the need to write code.
+            </p>
+            <h2>Main features</h2>
+            <ul>
+                <li>Graphical interface for selecting area, dates, and processing parameters.</li>
+                <li>Direct integration with the <a href="https://www.piwheels.org/project/ee-s1-ard/" target="_blank"><code>ee-s1-ard</code></a> package, making the workflow more accessible.</li>
+                <li>Support for border noise correction, terrain flattening, and speckle filtering.</li>
+                <li>Export of results ready for analysis and visualization.</li>
+            </ul>
+            <h2>Supported Parameters</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Default</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>geometry</td><td>ee.Geometry</td><td>Area of interest</td><td>Required</td></tr>
+                    <tr><td>start_date</td><td>str</td><td>Start date (YYYY-MM-DD)</td><td>Required</td></tr>
+                    <tr><td>stop_date</td><td>str</td><td>End date (YYYY-MM-DD)</td><td>Required</td></tr>
+                    <tr><td>polarization</td><td>str</td><td>Polarization (VV, VH, VVVH)</td><td>VVVH</td></tr>
+                    <tr><td>apply_border_noise_correction</td><td>bool</td><td>Apply border noise correction</td><td>True</td></tr>
+                    <tr><td>apply_terrain_flattening</td><td>bool</td><td>Apply terrain flattening</td><td>True</td></tr>
+                    <tr><td>apply_speckle_filtering</td><td>bool</td><td>Apply speckle filtering</td><td>True</td></tr>
+                    <tr><td>output_format</td><td>str</td><td>Output format (LINEAR, DB)</td><td>DB</td></tr>
+                </tbody>
+            </table>
+            <h2>Time Series Example and Selected Image</h2>
+            <img src="medias/demo.png" alt="Time series demonstration and selected date image" style="max-width:100%;border:1px solid #ccc;margin-bottom:1em;">
+            <p>
+                Above, a demonstration of the time series generated by the plugin and a SAR image from the selected date.
+                    <p>
+                        AGLgis is a graphical interface designed to simplify the use of the <a href="https://www.piwheels.org/project/ee-s1-ard/" target="_blank">ee-s1-ard</a> (Sentinel-1 SAR Backscatter Analysis Ready Data Preparation in Google Earth Engine) package in QGIS.
+                    </p>
+            <p>
+            The image above shows where to find your Google Cloud Project ID, which is required for authenticating and running the <a href="https://www.piwheels.org/project/ee-s1-ard/" target="_blank"><code>ee-s1-ard</code></a> package in Google Earth Engine.
+                Make sure you have a valid project set up in the <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> and use the Project ID when configuring the plugin.
+            </p>
+        </div>
 </body>
 </html>

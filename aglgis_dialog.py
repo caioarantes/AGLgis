@@ -192,8 +192,14 @@ from .modules import (
 # =============================================================================
 
 # Load the UI file for the main dialog
-ui_file = os.path.join("ui", "aglgis_dialog_base.ui")
+language = QSettings().value("locale/userLocale", "en")[0:2]
+
+if language == "pt":
+    ui_file = os.path.join("ui", "aglgis_dialog_base_pt.ui")
+else:
+    ui_file = os.path.join("ui", "aglgis_dialog_base.ui")
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), ui_file))
+
 
 
 # =============================================================================
@@ -254,13 +260,18 @@ class AGLgisDialog(QDialog, FORM_CLASS):
         self.last_clicked(3)  # Default to 3 months
         self.load_intro()
         self.tabWidget.setCurrentIndex(0)
+
+        self.language = QSettings().value("locale/userLocale", "en")[0:2]
         
         # Initialize window size
         QTimer.singleShot(0, lambda: self.resizeEvent("small"))
 
     def load_intro(self):
         """Load the introduction HTML content into the text browser."""
-        intro_path = os.path.join(os.path.dirname(__file__), "ui", "intro.html")
+        if QSettings().value("locale/userLocale", "en")[0:2] == "pt":
+            intro_path = os.path.join(os.path.dirname(__file__), "ui", "intro_pt.html")
+        else:
+            intro_path = os.path.join(os.path.dirname(__file__), "ui", "intro.html")
         with open(intro_path, "r", encoding="utf-8") as f:
             html_content = f.read()
         self.QTextBrowser.setHtml(html_content)
