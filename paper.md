@@ -10,7 +10,7 @@ authors:
 affiliations:
   - name: State University of Campinas (UNICAMP)
     index: 1
-  - name: Federal University of Viçosa (UFV)
+  - name: Universidade Federal de Viçosa (UFV)
     index: 2
 date: 2025-09-05
 bibliography: paper.bib
@@ -22,20 +22,20 @@ AGLgis is an open-source QGIS plugin [@qgis] designed to simplify the preparatio
 
 # Statement of Need
 
-Sentinel-1 SAR data [@sentinel1] is widely used in earth observation for applications such as land cover mapping, flood monitoring, and agricultural analysis. However, preparing analysis-ready SAR data typically requires complex processing steps and programming expertise. AGLgis addresses this gap by integrating the [ee-s1-ard] package [@ees1ard] into QGIS [@qgis], providing a user-friendly interface for non-programmers and researchers to access advanced SAR processing capabilities. The plugin streamlines workflows, reduces barriers to entry, and promotes reproducible research in geospatial science [@earthengine].
+Sentinel-1 SAR data [@sentinel1] can be used in earth observation for land cover mapping, flood monitoring, and agricultural analysis. Pre-processing SAR data may require multiple processing steps and familiarity with tools like Google Earth Engine's Code Editor, which can be a barrier for users without programming experience. AGLgis bridges this gap by integrating the [ee-s1-ard] package [@ees1ard] into QGIS [@qgis], offering a graphical interface that enables non-programmers and researchers to access SAR processing workflows. This approach streamlines data preparation, lowers the barrier to entry, and supports reproducible research in geospatial science [@earthengine].
 
 # Features
 
-AGLgis offers a user-friendly graphical interface for configuring and running Sentinel-1 SAR data processing workflows in QGIS. Key capabilities include:
+AGLgis offers a graphical interface for configuring and running Sentinel-1 SAR data processing workflows in QGIS. Key capabilities include:
 
 - Area of interest and date range selection
 - Integration with Google Earth Engine and the [ee-s1-ard] package
 - Automated border noise correction, terrain flattening, and speckle filtering
-- Interactive visualization of VV/VH time series and RGB composites within QGIS
+- Interactive visualization of VV/VH time series and RGB composites (VV, VH, VV/VH) within QGIS
 - Direct download of processed bands for selected dates
 - Batch download of multiple processed scenes
 
-All major processing parameters—geometry, temporal range, polarization (VV, VH, or VVVH), and correction options—are accessible via the plugin’s GUI. Sensible defaults (VVVH polarization and all corrections enabled) help users quickly obtain analysis-ready SAR data.
+All major processing parameters—geometry, temporal range, polarization, and correction options—are accessible via the plugin’s interface. Sensible defaults are set to help users obtain analysis-ready SAR data.
 
 # Demonstration
 
