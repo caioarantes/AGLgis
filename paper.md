@@ -29,7 +29,7 @@ AGLgis is an open-source QGIS plugin [@qgis] designed to simplify the processing
 
 # Statement of Need
 
-Remote sensing is the acquisition of information about the Earth's surface through sensors mounted on airborne or spaceborne platforms, without direct physical contact with the observed area [@surveypreprint], having its useful use both for visualization and for training autonomous models [@cropclassification]. Being cloud prone, one of the most interesting data types is SAR, which requires pre-processing. Pre-processing SAR data may require multiple processing steps and familiarity with tools like Google Earth Engine's Code Editor[@earthengine], which can be a barrier for users without programming experience. AGLgis bridges this gap by integrating the [ee-s1-ard] package into QGIS [@qgis], offering a graphical interface that enables non-programmers and researchers to access SAR processing workflows. This approach streamlines data pre-processing, lowers the barrier to entry, and supports reproducible research in geospatial science.
+Remote sensing is the acquisition of information about the Earth's surface through sensors mounted on airborne or spaceborne platforms, without direct physical contact with the observed area [@surveypreprint], having its useful use both for visualization and for training autonomous models [@cropclassification]. Being cloud prone, one of the most interesting data types is SAR, which requires pre-processing. Pre-processing SAR data may require multiple processing steps and familiarity with tools like Google Earth Engine's Code Editor[@earthengine], which can be a barrier for users without programming experience. AGLgis bridges this gap by integrating the [ee-s1-ard](https://pypi.org/project/ee-s1-ard/) package into QGIS [@qgis], offering a graphical interface that enables non-programmers and researchers to access SAR processing workflows. This approach streamlines data pre-processing, lowers the barrier to entry, and supports reproducible research in geospatial science.
 
 # Features and Demonstration
 
@@ -44,7 +44,7 @@ The main capabilities and results include:
   These are mapped to the red, green, and blue channels, respectively.
 - Direct and batch download of processed bands clipped to area of interest.
 
-All major processing parameters such as geometry, temporal range, polarization, and correction options are accessible via the plugin's interface. The figures below illustrate the plugin's interface and typical results:
+All major processing parameters such as geometry, temporal range, polarization, and correction options are accessible via the plugin's interface. The figures below illustrate the plugin's interface and typical results.
 
 ![Oveview tab for setting selection](medias/view.png)
 
@@ -52,16 +52,18 @@ All major processing parameters such as geometry, temporal range, polarization, 
 
 # Implementation
 
-AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@pyqt]. The plugin communicates with Google Earth Engine [@earthengine] (which requires authentication and a Google Cloud Project) and applies the  [ee-s1-ard] package, handling data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage.
+AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@pyqt]. The plugin communicates with Google Earth Engine [@earthengine] (which requires authentication and a Google Cloud Project) and applies the  [ee-s1-ard](https://pypi.org/project/ee-s1-ard/) package, handling data selection, and processing. Users can install the plugin in QGIS through the official repository and follow the documentation for setup and usage.
 
 # Availability
 
+
+- **Installation:** In QGIS, go to **Plugins** ▻ **Manage and Install Plugins**, then search for "AGLgis" and install it from the repository.
 - Source code: [https://github.com/caioarantes/AGLgis](https://github.com/caioarantes/AGLgis)
 - Documentation: Online at [GitHub Pages](https://caioarantes.github.io/AGLgis/)
 - License: GNU General Public License v2 or later
 
 # Acknowledgements
 
-We thank the QGIS and Google Earth Engine communities for their support and open-source contributions.
+We thank the QGIS and Google Earth Engine communities for their support and open-source contributions. The authors would like to thank Serrapilheira Institute (grant R-2011-37776), Institute of Artificial and Computational Intelligence (IDATA), National Council for Scientific and Technological Development (CNPq) - process number 141203/2025-0, National Laboratory for Scientific Computing (LNCC/MCTIC) for providing HPC resources of the SDumont supercomputer, Brazilian Institute of Geography and Statistics (IBGE/MPO), and Brazilian Federal Agency for Support and Evaluation of Graduate Education (CAPES) for their support for this research.
 
 # Reference
