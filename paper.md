@@ -25,7 +25,7 @@ affiliations:
     index: 2
 bibliography: paper.bib
 date: 17 September 2025
-title: AGLgis: A QGIS Plugin for Accessing and Visualizing Processed Sentinel-1 SAR Data
+title: "AGLgis: A QGIS Plugin for Accessing and Visualizing Processed Sentinel-1 SAR Data"
 ---
 
 # Summary
