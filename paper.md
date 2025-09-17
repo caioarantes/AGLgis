@@ -52,12 +52,12 @@ All major processing parameters such as geometry, temporal range, polarization, 
 
 # Implementation
 
-AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@pyqt]. The plugin communicates with Google Earth Engine [@earthengine] (which requires authentication and a Google Cloud Project) and applies the  [ee-s1-ard](https://pypi.org/project/ee-s1-ard/) package, handling data selection, and processing. Users can install the plugin in QGIS through the official repository and follow the documentation for setup and usage.
+AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@pyqt]. The plugin communicates with Google Earth Engine [@earthengine] (which requires authentication and a Google Cloud Project) and applies the [ee-s1-ard](https://pypi.org/project/ee-s1-ard/) package, handling data selection, and processing. 
 
 # Availability
 
 
-- **Installation:** In QGIS, go to **Plugins** ▻ **Manage and Install Plugins**, then search for "AGLgis" and install it from the repository.
+Users can install the plugin in QGIS through the official repository.
 - Source code: [https://github.com/caioarantes/AGLgis](https://github.com/caioarantes/AGLgis)
 - Documentation: Online at [GitHub Pages](https://caioarantes.github.io/AGLgis/)
 - License: GNU General Public License v2 or later
