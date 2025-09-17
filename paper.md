@@ -27,7 +27,6 @@ bibliography: paper.bib
 date: 17 September 2025
 title: "AGLgis: A QGIS Plugin for Accessing and Visualizing Processed Sentinel-1 SAR Data"
 ---
-
 # Summary
 
 AGLgis is an open-source QGIS plugin [@qgis] designed to simplify the processing and analysis of Sentinel-1 Synthetic Aperture Radar (SAR) Backscatter data [@esa_sentinel1] using Google Earth Engine (GEE) [@earthengine]. The plugin provides a graphical interface for configuring and running the [ee-s1-ard](https://pypi.org/project/ee-s1-ard/) package [@ees1ard], which implements the data processing workflow described by Mullissa et al. (2021) [@mullissa2021], enabling users to process SAR data without writing code. Key features include area selection, date range configuration, border noise correction, terrain flattening, speckle filtering, and export of analysis-ready results. AGLgis aims to make advanced SAR data workflows accessible to a broader geospatial community, supporting research and operational applications in remote sensing.
@@ -62,8 +61,11 @@ AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user
 # Availability
 
 Users can install the plugin in QGIS through the official repository.
+
 - Source code: [https://github.com/caioarantes/AGLgis](https://github.com/caioarantes/AGLgis)
+
 - Documentation: Online at [GitHub Pages](https://caioarantes.github.io/AGLgis/)
+
 - License: GNU General Public License v2 or later
 
 # Acknowledgements
