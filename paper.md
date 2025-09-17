@@ -61,6 +61,7 @@ AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user
 # Availability
 
 Users can install the plugin in QGIS through the official repository.
+
 - Source code: [https://github.com/caioarantes/AGLgis](https://github.com/caioarantes/AGLgis)
 
 - Documentation: Online at [GitHub Pages](https://caioarantes.github.io/AGLgis/)
