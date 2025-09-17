@@ -44,9 +44,7 @@ The main capabilities and results include:
   These are mapped to the red, green, and blue channels, respectively.
 - Direct and batch download of processed bands clipped to area of interest.
 
-All major processing parameters—geometry, temporal range, polarization, and correction options are accessible via the plugin's interface.
-
-The figures below illustrate the plugin's interface and typical results:
+All major processing parameters such as geometry, temporal range, polarization, and correction options are accessible via the plugin's interface. The figures below illustrate the plugin's interface and typical results:
 
 ![Oveview tab for setting selection](medias/view.png)
 
