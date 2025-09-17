@@ -19,7 +19,7 @@ affiliations:
     index: 1
   - name: Universidade Federal de Viçosa (UFV)
     index: 2
-date: 2025-09-05
+date: 17 September 2025
 bibliography: paper.bib
 ---
 
@@ -37,12 +37,12 @@ The main capabilities and results include:
 
 - Selection of area of interest and date range
 - Automated border noise correction, terrain flattening, and speckle filtering
-- Interactive visualization of VV/VH time series and RGB composites within QGIS, where:
-    - **VV**: vertical transmit, vertical receive polarization  
-    - **VH**: vertical transmit, horizontal receive polarization  
-    - **VV/VH**: ratio between VV and VH backscatter values  
-      These are mapped to the red, green, and blue channels, respectively.
-- Direct and batch download of processed bands clipped to area of interest.
+- RGB composites within QGIS, where the red, green, and blue channels are mapped respectively as:
+  - **VV**: vertical transmit, vertical receive polarization  
+  - **VH**: vertical transmit, horizontal receive polarization  
+  - **VV/VH**: ratio between VV and VH backscatter values
+- Interactive visualization of VV/VH time series
+- Direct and batch download of processed bands clipped to area of interest
 
 All major processing parameters such as geometry, temporal range, polarization, and correction options are accessible via the plugin's interface. The figures below illustrate the plugin's interface and typical results.
 
