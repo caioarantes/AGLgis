@@ -38,10 +38,10 @@ The main capabilities and results include:
 - Selection of area of interest and date range
 - Automated border noise correction, terrain flattening, and speckle filtering
 - Interactive visualization of VV/VH time series and RGB composites within QGIS, where:
-    - **VV**: vertical transmit, vertical receive polarization
-    - **VH**: vertical transmit, horizontal receive polarization
-    - **VV/VH**: ratio between VV and VH backscatter values
-  These are mapped to the red, green, and blue channels, respectively.
+    - **VV**: vertical transmit, vertical receive polarization  
+    - **VH**: vertical transmit, horizontal receive polarization  
+    - **VV/VH**: ratio between VV and VH backscatter values  
+      These are mapped to the red, green, and blue channels, respectively.
 - Direct and batch download of processed bands clipped to area of interest.
 
 All major processing parameters such as geometry, temporal range, polarization, and correction options are accessible via the plugin's interface. The figures below illustrate the plugin's interface and typical results.
@@ -55,7 +55,6 @@ All major processing parameters such as geometry, temporal range, polarization, 
 AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@pyqt]. The plugin communicates with Google Earth Engine [@earthengine] (which requires authentication and a Google Cloud Project) and applies the [ee-s1-ard](https://pypi.org/project/ee-s1-ard/) package, handling data selection, and processing. 
 
 # Availability
-
 
 Users can install the plugin in QGIS through the official repository.
 - Source code: [https://github.com/caioarantes/AGLgis](https://github.com/caioarantes/AGLgis)
