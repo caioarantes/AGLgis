@@ -38,9 +38,9 @@ The main capabilities and results include:
 - Selection of area of interest and date range
 - Automated border noise correction, terrain flattening, and speckle filtering
 - RGB composites within QGIS, where the red, green, and blue channels are mapped respectively as:
-  - **VV**: vertical transmit, vertical receive polarization  
-  - **VH**: vertical transmit, horizontal receive polarization  
-  - **VV/VH**: ratio between VV and VH backscatter values
+  **VV**: vertical transmit, vertical receive polarization
+  **VH**: vertical transmit, horizontal receive polarization
+  **VV/VH**: ratio between VV and VH backscatter values
 - Interactive visualization of VV/VH time series
 - Direct and batch download of processed bands clipped to area of interest
 
