@@ -1,5 +1,4 @@
 ---
-title: "AGLgis: A QGIS Plugin for Accessing and Visualizing Processed Sentinel-1 SAR Data"
 authors:
   - name: Caio Simplicio Arantes
     orcid: 0009-0006-6926-9368
@@ -13,14 +12,20 @@ authors:
   - name: Hugo Neves de Oliveira
     orcid: 0000-0001-8760-9801
     affiliation: 2
-
+tags:
+  - remote sensing
+  - SAR
+  - Sentinel-1
+  - QGIS
+  - Google Earth Engine
 affiliations:
   - name: State University of Campinas (UNICAMP)
     index: 1
   - name: Universidade Federal de Viçosa (UFV)
     index: 2
-date: 17 September 2025
 bibliography: paper.bib
+date: 17 September 2025
+title: AGLgis: A QGIS Plugin for Accessing and Visualizing Processed Sentinel-1 SAR Data
 ---
 
 # Summary
@@ -38,9 +43,9 @@ The main capabilities and results include:
 - Selection of area of interest and date range
 - Automated border noise correction, terrain flattening, and speckle filtering
 - RGB composites within QGIS, where the red, green, and blue channels are mapped respectively as:
-  **VV**: vertical transmit, vertical receive polarization
-  **VH**: vertical transmit, horizontal receive polarization
-  **VV/VH**: ratio between VV and VH backscatter values
+  - **VV**: vertical transmit, vertical receive polarization
+  - **VH**: vertical transmit, horizontal receive polarization
+  - **VV/VH**: ratio between VV and VH backscatter values
 - Interactive visualization of VV/VH time series
 - Direct and batch download of processed bands clipped to area of interest
 
