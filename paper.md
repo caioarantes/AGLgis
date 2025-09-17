@@ -7,6 +7,13 @@ authors:
   - name: Mateus Pinto da Silva
     orcid: 0000-0001-8940-2716
     affiliation: 2
+  - name: Sabrina Paes Leme Passos Correa
+    orcid: 0000-0002-9956-4134
+    affiliation: 2
+  - name: Hugo Neves de Oliveira
+    orcid: 0000-0001-8760-9801
+    affiliation: 2
+
 affiliations:
   - name: State University of Campinas (UNICAMP)
     index: 1
@@ -22,7 +29,7 @@ AGLgis is an open-source QGIS plugin [@qgis] designed to simplify the processing
 
 # Statement of Need
 
-Pre-processing SAR data may require multiple processing steps and familiarity with tools like Google Earth Engine's Code Editor[@earthengine], which can be a barrier for users without programming experience. AGLgis bridges this gap by integrating the [ee-s1-ard] package [@ees1ard] into QGIS [@qgis], offering a graphical interface that enables non-programmers and researchers to access SAR processing workflows. This approach streamlines data pre-processing, lowers the barrier to entry, and supports reproducible research in geospatial science.
+Remote sensing is the acquisition of information about the Earth's surface through sensors mounted on airborne or spaceborne platforms, without direct physical contact with the observed area [surveypreprint], having its useful use both for visualization and for training autonomous models [cropclassification]. Being cloud prone, one of the most interesting data types is SAR, which requires pre-processing. Pre-processing SAR data may require multiple processing steps and familiarity with tools like Google Earth Engine's Code Editor[@earthengine], which can be a barrier for users without programming experience. AGLgis bridges this gap by integrating the [ee-s1-ard] package [@ees1ard] into QGIS [@qgis], offering a graphical interface that enables non-programmers and researchers to access SAR processing workflows. This approach streamlines data pre-processing, lowers the barrier to entry, and supports reproducible research in geospatial science.
 
 # Features and Demonstration
 
@@ -47,7 +54,7 @@ The figures below illustrate the plugin's interface and typical results:
 
 # Implementation
 
-AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@pyqt]. The plugin communicates with Google Earth Engine [@earthengine] (which requires authenticatin and a Google Cloud Project) and applies the  [ee-s1-ard] package [@ees1ard], handling data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage.
+AGLgis is implemented in Python and leverages QGIS's PyQt framework for the user interface [@pyqt]. The plugin communicates with Google Earth Engine [@earthengine] (which requires authentication and a Google Cloud Project) and applies the  [ee-s1-ard] package [@ees1ard], handling data selection, and processing. Users can install the plugin in QGIS and follow the documentation for setup and usage.
 
 # Availability
 
